@@ -692,16 +692,6 @@ window.addEventListener('resize', ()=>{
   drawVBarChart('chartProfit','tipProfit', ['SSI','VPS','TCBS','VNDirect','VPBankS'], [1593,1547,1458,681,514], [1511,1378,2097,1106,2159], '#2a3a58', '#D4A73E', 'tỷ đ');
   drawLineChart('chartMargin','tipMargin', ['Q4/2025','Q1/2026','Q2/2026'], [406,415,453.8], '#D4A73E', 'k tỷ đ');
 });
-
-function autoResizeIframe(){
-  try{
-    const h = document.documentElement.scrollHeight;
-    if (window.frameElement) window.frameElement.style.height = h + 'px';
-  }catch(e){}
-}
-window.addEventListener('load', autoResizeIframe);
-window.addEventListener('resize', autoResizeIframe);
-setTimeout(autoResizeIframe, 600);
 </script>
 </body>
 </html>
