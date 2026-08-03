@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo cáo Nghiên cứu Ngành Ngân hàng Việt Nam — 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0F1C; --surface:#111A2C; --surface-2:#152238; --line:#25334D;
+    --gold:#3FA8E8; --gold-soft:#2a6a94; --accent2:#D4A73E;
+    --up:#2FBE7C; --down:#F0475C;
+    --text:#E9EEF7; --muted:#8B9BB4; --muted-2:#5D6F8C;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(ellipse 1200px 600px at 15% -10%, rgba(63,168,232,0.09), transparent 60%),
+      radial-gradient(ellipse 900px 500px at 100% 10%, rgba(47,190,124,0.05), transparent 60%),
+      var(--bg);
+    color:var(--text); font-family:'Inter', sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  h1,h2,h3,.disp{font-family:'Space Grotesk', sans-serif;}
+  a{color:inherit;}
+
+  .ticker-wrap{position:sticky; top:0; z-index:50; background:#080C15; border-bottom:1px solid var(--line); overflow:hidden; white-space:nowrap; padding:10px 0;}
+  .ticker-track{display:inline-flex; animation: scroll-left 48s linear infinite;}
+  .ticker-wrap:hover .ticker-track{animation-play-state:paused;}
+  @keyframes scroll-left{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+  .tick{display:inline-flex; align-items:center; gap:8px; padding:0 22px; font-size:12.5px; font-family:'IBM Plex Mono',monospace; border-right:1px solid var(--line); color:var(--muted);}
+  .tick b{color:var(--text); font-weight:600;}
+  .tick .up{color:var(--up);} .tick .down{color:var(--down);}
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+  section{padding:72px 0;}
+  .eyebrow{display:flex; align-items:center; gap:10px; font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin-bottom:14px;}
+  .eyebrow::before{content:""; width:26px; height:1px; background:var(--gold);}
+
+  .hero{padding:100px 0 60px;}
+  .hero h1{font-size:clamp(32px, 5vw, 58px); font-weight:700; letter-spacing:-0.02em; line-height:1.08; max-width:920px;}
+  .hero h1 em{font-style:normal; color:var(--gold);}
+  .hero p.lede{max-width:660px; margin-top:22px; font-size:16.5px; color:var(--muted); line-height:1.7;}
+  .hero-meta{display:flex; gap:28px; flex-wrap:wrap; margin-top:36px; font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--muted-2);}
+  .hero-meta span b{color:var(--gold); display:block; font-size:11px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; font-weight:600;}
+
+  .kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:52px; border-radius:10px; overflow:hidden;}
+  .kpi{background:var(--surface); padding:24px 22px;}
+  .kpi .label{font-size:11.5px; color:var(--muted-2); text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px;}
+  .kpi .val{font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:700;}
+  .kpi .delta{font-family:'IBM Plex Mono',monospace; font-size:12px; margin-top:6px;}
+
+  .sec-head{display:flex; justify-content:space-between; align-items:flex-end; gap:20px; margin-bottom:34px; flex-wrap:wrap;}
+  .sec-head h2{font-size:clamp(22px,3vw,32px); font-weight:700; letter-spacing:-0.01em;}
+  .sec-head p{color:var(--muted); max-width:480px; font-size:14px;}
+
+  .panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:26px;}
+  .grid-2{display:grid; grid-template-columns:1.3fr 1fr; gap:20px;}
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  .grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  @media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+
+  .chart-box{width:100%;}
+  .chart-box svg{width:100%; height:auto; overflow:visible;}
+  .chart-legend{display:flex; gap:18px; margin-bottom:14px; flex-wrap:wrap;}
+  .chart-legend .li{display:flex; align-items:center; gap:7px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted);}
+  .chart-legend .sw{width:10px; height:10px; border-radius:2px;}
+  .svg-tip{position:absolute; pointer-events:none; background:#080C15; border:1px solid var(--line); padding:6px 10px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--text); opacity:0; transition:opacity .1s; white-space:nowrap; z-index:60;}
+  .chart-wrap{position:relative;}
+
+  .rank-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .rank-table th{text-align:left; font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:10.5px; color:var(--muted-2); text-transform:uppercase; letter-spacing:.06em; padding:0 10px 10px; border-bottom:1px solid var(--line);}
+  .rank-table td{padding:10px 10px; border-bottom:1px solid rgba(37,51,77,0.5); vertical-align:middle;}
+  .rank-table tr:last-child td{border-bottom:none;}
+  .rank-table td.name{font-weight:600;}
+  .rank-table td.num{font-family:'IBM Plex Mono',monospace;}
+  .chip{display:inline-flex; align-items:center; gap:4px; font-family:'IBM Plex Mono',monospace; font-size:11px; padding:2px 8px; border-radius:20px;}
+  .chip.up{background:rgba(47,190,124,0.12); color:var(--up);}
+  .chip.down{background:rgba(240,71,92,0.12); color:var(--down);}
+  .chip.buy{background:rgba(63,168,232,0.14); color:var(--gold);}
+  .chip.hold{background:rgba(212,167,62,0.14); color:var(--accent2);}
+
+  .news-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media(max-width:900px){.news-grid{grid-template-columns:1fr;}}
+  .news-card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px; display:flex; flex-direction:column; gap:10px;}
+  .news-card .tag{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--gold); text-transform:uppercase; letter-spacing:.07em;}
+  .news-card h3{font-size:15px; font-weight:600; line-height:1.4;}
+  .news-card p{font-size:12.5px; color:var(--muted); line-height:1.6;}
+  .news-card .date{margin-top:auto; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted-2); border-top:1px solid var(--line); padding-top:10px;}
+
+  .outlook-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  @media(max-width:900px){.outlook-grid{grid-template-columns:1fr;}}
+  .outlook-card{background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:24px;}
+  .outlook-card .src{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--gold); text-transform:uppercase; margin-bottom:10px;}
+  .outlook-card .target{font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:700; margin-bottom:6px;}
+  .outlook-card .sub{font-size:12px; color:var(--muted-2); margin-bottom:14px;}
+  .outlook-card p{font-size:13px; color:var(--muted); line-height:1.6;}
+
+  .quote-strip{margin-top:26px; padding:22px 26px; border-left:3px solid var(--gold); background:var(--surface); border-radius:0 10px 10px 0; font-size:14px; color:var(--muted);}
+
+  .timeline{display:flex; flex-direction:column; gap:0;}
+  .tl-item{display:grid; grid-template-columns:110px 1fr; gap:20px; padding:16px 0; border-bottom:1px solid var(--line);}
+  .tl-item:last-child{border-bottom:none;}
+  .tl-item .tl-date{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--gold); font-weight:600;}
+  .tl-item .tl-body h4{font-size:14px; font-weight:600; margin-bottom:4px;}
+  .tl-item .tl-body p{font-size:12.5px; color:var(--muted); line-height:1.6;}
+
+  footer{padding:50px 0 70px; border-top:1px solid var(--line); margin-top:20px;}
+  footer .src-list{display:grid; grid-template-columns:repeat(2,1fr); gap:8px 24px; font-size:12px; color:var(--muted-2); margin-top:18px;}
+  @media(max-width:700px){footer .src-list{grid-template-columns:1fr;}}
+  .disclaimer{margin-top:28px; font-size:12px; color:var(--muted-2); max-width:780px; line-height:1.7;}
+
+  .badge-live{display:inline-flex; align-items:center; gap:6px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--up); background:rgba(47,190,124,0.1); padding:4px 10px; border-radius:20px; margin-bottom:18px;}
+  .dot{width:6px; height:6px; border-radius:50%; background:var(--up); animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .split-note{font-size:12px; color:var(--muted-2); margin-top:10px; line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="ticker-wrap"><div class="ticker-track" id="tickerTrack"></div></div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge-live"><span class="dot"></span> DỮ LIỆU CẬP NHẬT ĐẾN 08/2026 · BCTC Q2/2026 & GIAO DỊCH T7/2026</div>
+    <h1>Ngành Ngân hàng Việt Nam: <em>lợi nhuận kỷ lục</em> nhưng cổ phiếu chịu áp lực định giá lại</h1>
+    <p class="lede">Báo cáo nghiên cứu toàn diện ngành ngân hàng niêm yết: tin tức, kết quả kinh doanh, chỉ số tài chính (NIM, nợ xấu, CAR, ROE), định giá cổ phiếu theo phong cách CFA, dòng vốn khối ngoại/quỹ và dự báo triển vọng nửa cuối 2026.</p>
+    <div class="hero-meta">
+      <span><b>Phạm vi</b>27 ngân hàng niêm yết trên HOSE/HNX/UPCoM</span>
+      <span><b>Nguồn</b>NHNN, BCTC hợp nhất, SSI/Vietcap/VPBankS/SHS/Yuanta Research</span>
+      <span><b>Kỳ khảo sát</b>Q1–Q2/2026 (lũy kế 6T2026) · cập nhật T7/2026</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="label">Tăng trưởng tín dụng toàn hệ thống</div>
+        <div class="val mono">+5,71% <span style="font-size:13px;color:var(--muted)">YTD (T5)</span></div>
+        <div class="delta chip up">▲ ~19% YoY · đạt 19,6 triệu tỷ đ</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Tỷ lệ nợ xấu (ngân hàng niêm yết)</div>
+        <div class="val mono">1,99%</div>
+        <div class="delta chip down">▲ từ 1,87% · +28 nghìn tỷ nợ xấu mới</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Chỉ số ngành Ngân hàng (T7/2026)</div>
+        <div class="val mono">635,01 <span style="font-size:13px;color:var(--muted)">điểm</span></div>
+        <div class="delta chip down">▼ -8,13% so T6 · vốn hóa "bốc hơi" ~200.000 tỷ đ</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Quán quân lợi nhuận H1/2026</div>
+        <div class="val mono">Vietcombank</div>
+        <div class="delta chip up">29.222 tỷ đ · +33,5% YoY</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWS -->
+  <section id="tintuc">
+    <div class="sec-head">
+      <div><div class="eyebrow">Tin tức nổi bật</div><h2>Diễn biến đáng chú ý ngành ngân hàng gần đây</h2></div>
+      <p>Bức tranh phân hóa rõ rệt: lợi nhuận tăng trưởng mạnh nhưng cổ phiếu bị chiết khấu do lo ngại vĩ mô, tỷ giá và NIM thu hẹp.</p>
+    </div>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="tag">Thị trường</div>
+        <h3>VN-Index thủng mốc 1.800 điểm, ngân hàng chịu tổn thương nặng nhất</h3>
+        <p>Áp lực bán giải chấp (force sell) trên diện rộng đẩy VN-Index về 1.735,49 điểm cuối T7/2026 (-7,04% so T6). Nhóm "vua" bị chiết khấu mạnh nhất do lo ngại NIM thu hẹp và nợ xấu gia tăng.</p>
+        <div class="date">31/07/2026 · Vietstock</div>
+      </div>
+      <div class="news-card">
+        <div class="tag">Dòng vốn ngoại</div>
+        <h3>Khối ngoại bán ròng tháng thứ 6 liên tiếp, nhưng cường độ giảm mạnh</h3>
+        <p>Tổng giá trị bán ròng T7/2026 chỉ còn 236 tỷ đồng, tập trung ở TCB (-59 tỷ), VPB (-44 tỷ), TPB (-25 tỷ); ngược lại gom có chọn lọc HDB (+11 tỷ), LPB (+8 tỷ).</p>
+        <div class="date">01/08/2026 · Vietstock</div>
+      </div>
+      <div class="news-card">
+        <div class="tag">Chính sách</div>
+        <h3>Nghị quyết 79-NQ/TW mở đường cho ngân hàng quốc doanh giữ lại lợi nhuận tăng vốn</h3>
+        <p>Cơ chế mới giúp cải thiện CAR bền vững, tăng năng lực tài trợ các dự án hạ tầng đầu tư công giai đoạn 2026–2030. Thông tư 25/2026/TT-NHNN tạo thêm dư địa tín dụng.</p>
+        <div class="date">06/01/2026 · Tạp chí Kinh tế Tài chính</div>
+      </div>
+      <div class="news-card">
+        <div class="tag">Kết quả kinh doanh</div>
+        <h3>VPBank lãi quý 2 gần 11.000 tỷ, cao nhất khối tư nhân</h3>
+        <p>Lợi nhuận trước thuế hợp nhất H1/2026 đạt gần 18.900 tỷ đồng (+68% YoY), hoàn thành gần 46% kế hoạch cả năm — tốc độ tăng trưởng cao nhất trong nhóm ngân hàng lớn.</p>
+        <div class="date">30/07/2026 · CafeF</div>
+      </div>
+      <div class="news-card">
+        <div class="tag">Cổ đông</div>
+        <h3>Mùa ĐHCĐ 2026: "Cơn sóng tăng vốn lớn nhất thập kỷ"</h3>
+        <p>Áp lực CAR, lộ trình Basel III và trần LDR buộc hầu hết ngân hàng phải tăng vốn qua chia cổ tức cổ phiếu hoặc phát hành riêng lẻ để duy trì dư địa tăng trưởng tín dụng.</p>
+        <div class="date">01/04/2026 · 24HMoney</div>
+      </div>
+      <div class="news-card">
+        <div class="tag">Room ngoại</div>
+        <h3>Hơn 95 tỷ cổ phiếu ngân hàng còn hở room ngoại</h3>
+        <p>Dù dư địa room còn rất lớn, dòng vốn ngoại vẫn thận trọng đứng ngoài quan sát trước áp lực tỷ giá; nhóm ngân hàng chiếm 30-35% vốn hóa toàn thị trường nên khó có "sóng lớn" đồng loạt.</p>
+        <div class="date">02/07/2026 · VnBusiness</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINANCIAL REPORTS -->
+  <section id="bctc">
+    <div class="sec-head">
+      <div><div class="eyebrow">Báo cáo tài chính</div><h2>Lợi nhuận trước thuế lũy kế 6 tháng đầu năm 2026</h2></div>
+      <p>Vietcombank giữ vững ngôi vương lợi nhuận toàn ngành, bỏ xa nhóm bám đuổi; VPBank là hiện tượng tăng trưởng mạnh nhất trong nhóm ngân hàng lớn.</p>
+    </div>
+
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="chart-legend">
+        <span class="li"><span class="sw" style="background:#3FA8E8"></span>Lợi nhuận trước thuế H1/2026 (tỷ đồng)</span>
+      </div>
+      <div class="chart-wrap"><div class="chart-box" id="chartProfit"></div><div class="svg-tip" id="tipProfit"></div></div>
+    </div>
+
+    <div class="grid-3">
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Tăng trưởng nổi bật H1</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">Xét tốc độ tăng trưởng lợi nhuận: <b style="color:var(--text)">VPBank +49%</b>, VietinBank +40%, OCB +36%, HDBank +22%, MB +19%, Techcombank +17% so với cùng kỳ.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Vietcombank dẫn dắt</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">Riêng quý 2, PBT đạt <b style="color:var(--text)">17.420 tỷ đ</b> (+57,9% YoY) nhờ chi phí dự phòng giảm gần 38%. Tổng tài sản gần <b style="color:var(--gold)">2,67 triệu tỷ đồng</b>, nợ xấu dưới 1%, CAR 11,14%.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Điểm tối: Sacombank</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">Q2/2026 dự báo PBT chỉ khoảng <b style="color:var(--down)">2.400 tỷ đ (-34% YoY)</b> do chi phí dự phòng rủi ro tín dụng vẫn ở mức cao — ngân hàng chịu áp lực lớn nhất nhóm theo dõi của SSI.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINANCIAL INDICATORS -->
+  <section id="chiso">
+    <div class="sec-head">
+      <div><div class="eyebrow">Chỉ số tài chính ngành</div><h2>NIM, nợ xấu & bộ đệm dự phòng toàn ngành</h2></div>
+      <p>Chất lượng tài sản là biến số quyết định nửa cuối 2026: nợ xấu có xu hướng nhích lên trong khi tỷ lệ bao phủ (LLR) chưa hồi phục hoàn toàn về vùng an toàn cũ.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="chart-wrap"><div class="chart-box" id="chartNPL"></div><div class="svg-tip" id="tipNPL"></div></div>
+        <div class="split-note">Tỷ lệ nợ xấu nội bảng toàn ngành (%) theo các kỳ báo cáo; dự phóng cuối 2026 theo SSI Research.</div>
+      </div>
+      <div class="panel">
+        <table class="rank-table">
+          <thead><tr><th>Chỉ tiêu</th><th>Giá trị</th><th>Ghi chú</th></tr></thead>
+          <tbody>
+            <tr><td class="name">Tỷ lệ bao phủ nợ xấu (LLR)</td><td class="num">84%</td><td><span class="chip up">▲ từ đáy 80% (Q2/2025)</span></td></tr>
+            <tr><td class="name">LLR dự phóng cuối 2026</td><td class="num">~85%</td><td><span class="chip hold">MBS/SSI dự báo</span></td></tr>
+            <tr><td class="name">CAR Techcombank</td><td class="num">15%</td><td><span class="chip up">Cao hơn nhiều yêu cầu QĐ</span></td></tr>
+            <tr><td class="name">CAR ABBank</td><td class="num">&gt;12%</td><td><span class="chip up">Nợ xấu thấp nhất hệ thống ~0,55%</span></td></tr>
+            <tr><td class="name">LDR Techcombank</td><td class="num">80,1%</td><td><span class="chip hold">Cân đối nguồn vốn tốt</span></td></tr>
+            <tr><td class="name">Lợi nhuận toàn ngành 2026F</td><td class="num">+19% ~ 20%</td><td><span class="chip up">Vietcap / MBS Research</span></td></tr>
+          </tbody>
+        </table>
+        <div class="split-note">4 ngân hàng duy trì LLR trên 100%: Vietcombank (201,9% — dẫn đầu), VietinBank, Techcombank, Bac A Bank. BIDV đã giảm xuống dưới ngưỡng 100%.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUATION -->
+  <section id="dinhgia">
+    <div class="sec-head">
+      <div><div class="eyebrow">Định giá cổ phiếu · Phong cách CFA</div><h2>Bảng định giá & khuyến nghị đầu tư theo mã</h2></div>
+      <p>Tổng hợp khuyến nghị từ các CTCK lớn: SSI, Vietcap, VPBankS, SHS, Yuanta — đa số duy trì quan điểm TÍCH CỰC với ngành trong vùng định giá thấp hơn trung bình lịch sử.</p>
+    </div>
+
+    <div class="panel">
+      <table class="rank-table">
+        <thead><tr><th>Mã CP</th><th>P/B FY26F</th><th>ROE dự phóng</th><th>Giá mục tiêu</th><th>Khuyến nghị</th><th>Nguồn</th></tr></thead>
+        <tbody>
+          <tr><td class="name">MBB</td><td class="num mono">1,0–1,4x</td><td class="num mono">20,1%</td><td class="num mono">31.000–34.200đ</td><td><span class="chip buy">MUA (+30–36%)</span></td><td>VPBankS / SHS</td></tr>
+          <tr><td class="name">TPB</td><td class="num mono">—</td><td class="num mono">—</td><td class="num mono">—</td><td><span class="chip buy">MUA (&gt;30%)</span></td><td>SSI Research</td></tr>
+          <tr><td class="name">CTG</td><td class="num mono">—</td><td class="num mono">—</td><td class="num mono">—</td><td><span class="chip buy">MUA (&gt;30%)</span></td><td>SSI Research</td></tr>
+          <tr><td class="name">STB</td><td class="num mono">—</td><td class="num mono">—</td><td class="num mono">—</td><td><span class="chip buy">MUA (&gt;30%)</span></td><td>SSI Research</td></tr>
+          <tr><td class="name">HDB</td><td class="num mono">—</td><td class="num mono">—</td><td class="num mono">31.600đ</td><td><span class="chip hold">KHẢ QUAN</span></td><td>SSI Research</td></tr>
+          <tr><td class="name">VPB</td><td class="num mono">—</td><td class="num mono">15,86% (2025)</td><td class="num mono">—</td><td><span class="chip buy">Tích cực</span></td><td>Vietcap</td></tr>
+          <tr><td class="name">VCB</td><td class="num mono">—</td><td class="num mono">25% (TB 5 năm)</td><td class="num mono">—</td><td><span class="chip buy">Nắm giữ dài hạn</span></td><td>DSC</td></tr>
+          <tr><td class="name">ACB</td><td class="num mono">—</td><td class="num mono">—</td><td class="num mono">—</td><td><span class="chip hold">Nền tảng vững</span></td><td>SHS</td></tr>
+          <tr><td class="name">Toàn ngành</td><td class="num mono">1,2x</td><td class="num mono">~17%</td><td class="num mono">—</td><td><span class="chip hold">Dưới -1 độ lệch chuẩn 10Y</span></td><td>Yuanta Research</td></tr>
+        </tbody>
+      </table>
+      <div class="split-note">P/B toàn ngành hiện dao động 1,2–1,3 lần; hơn 70% cổ phiếu ngân hàng đang giao dịch dưới P/E 10 lần (SHS) — được xem là vùng định giá an toàn cho nhà đầu tư trung–dài hạn. Ô "—" thể hiện dữ liệu chưa được nguồn công khai cụ thể tại thời điểm khảo sát.</div>
+    </div>
+  </section>
+
+  <!-- FUND FLOWS -->
+  <section id="dongvon">
+    <div class="sec-head">
+      <div><div class="eyebrow">Dòng vốn khối ngoại & Quỹ</div><h2>Diễn biến mua/bán ròng cổ phiếu ngân hàng theo tháng</h2></div>
+      <p>Khối ngoại duy trì bán ròng 6 tháng liên tiếp nhưng cường độ suy yếu dần; dòng tiền vẫn âm thầm gom chọn lọc ở nhóm định giá hấp dẫn.</p>
+    </div>
+
+    <div class="timeline panel">
+      <div class="tl-item">
+        <div class="tl-date">Tháng 4/2026</div>
+        <div class="tl-body"><h4>Vốn hóa ngành +83.000 tỷ đồng, áp lực bán hạ nhiệt</h4><p>Thông tin nâng hạng thị trường FTSE Russell hỗ trợ tâm lý; đà bán ròng của khối ngoại giảm xuống mức thấp nhất trong 3 tháng. VN-Index đạt 1.854,1 điểm (+11% MoM).</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Tháng 5/2026</div>
+        <div class="tl-body"><h4>Bán ròng tháng thứ 4 liên tiếp, nhưng VCB được gom mạnh nhất</h4><p>Khối ngoại mua ròng VCB +1.139 tỷ đồng — lớn nhất ngành; rải rác thêm LPB (+263 tỷ), BID (+180 tỷ), SSB (+42 tỷ). VN-Index đi ngang quanh 1.863,49 điểm.</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Nửa đầu 2026 (lũy kế)</div>
+        <div class="tl-body"><h4>VCB và ACB mỗi mã bị bán ròng ~4.900 tỷ đồng</h4><p>Áp lực rút vốn lan rộng nhóm vốn hóa lớn: STB -4.300 tỷ, MSB -3.200 tỷ, HDB -2.800 tỷ — nằm trong xu hướng chung khối ngoại thoái vốn khỏi nhóm bluechip (FPT, VHM, VIC).</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Tháng 7/2026</div>
+        <div class="tl-body"><h4>Bán ròng thu hẹp còn 236 tỷ đồng — tháng thứ 6 liên tiếp</h4><p>Tập trung chốt lời TCB (-59 tỷ), VPB (-44 tỷ), TPB (-25 tỷ); ngược lại gom chọn lọc HDB (+11 tỷ), LPB (+8 tỷ). Vốn hóa ngành "bốc hơi" ~200.000 tỷ đồng do VN-Index điều chỉnh sâu về 1.735,49 điểm.</p></div>
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-top:20px;">
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Tỷ trọng vốn hóa</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.65;">Ngành ngân hàng chiếm <b style="color:var(--gold)">30–35%</b> vốn hóa toàn thị trường — dòng tiền nội có xu hướng "đánh du kích", luân chuyển giữa các mã thay vì kéo đồng loạt cả ngành.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Room ngoại</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.65;">Hơn <b style="color:var(--text)">95 tỷ cổ phiếu</b> ngân hàng còn hở room ngoại — vừa là thách thức thanh khoản vừa là dư địa cho sóng tăng trưởng kế tiếp khi tâm lý cải thiện.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Thanh khoản dẫn đầu</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.65;">SHB dẫn đầu thanh khoản toàn ngành với hơn <b style="color:var(--text)">86 triệu CP/phiên</b> (+14,8%); theo sau là HDB với hơn 20 triệu CP/phiên.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTLOOK -->
+  <section id="dubao">
+    <div class="sec-head">
+      <div><div class="eyebrow">Dự phóng · Nửa cuối 2026</div><h2>Triển vọng lợi nhuận, NIM và định giá</h2></div>
+      <p>NIM được kỳ vọng cải thiện dần khi các khoản vay hết ưu đãi chuyển sang lãi suất thả nổi; tuy nhiên chất lượng tài sản vẫn là ẩn số lớn nhất.</p>
+    </div>
+
+    <div class="outlook-grid">
+      <div class="outlook-card">
+        <div class="src">Vietcap Research</div>
+        <div class="target mono">+19% <span style="font-size:13px;color:var(--muted)">LN toàn ngành</span></div>
+        <div class="sub">Dự báo tăng trưởng lợi nhuận 2026</div>
+        <p>Cao hơn đáng kể mức ~14% ước tính 2025, nhờ tín dụng phục hồi và room ưu đãi cho các ngân hàng hỗ trợ tổ chức yếu kém (VPB, MBB được cấp room tới 35%).</p>
+      </div>
+      <div class="outlook-card">
+        <div class="src">SSI Research</div>
+        <div class="target mono">1,8% <span style="font-size:13px;color:var(--muted)">NPL cuối 2026</span></div>
+        <div class="sub">Dự phóng nợ xấu & bao phủ dự phòng</div>
+        <p>Cao hơn mức 1,76% cuối 2025; nợ nhóm 2 tăng thêm ~20 điểm cơ bản; tỷ lệ bao phủ nợ xấu giảm còn khoảng 85%.</p>
+      </div>
+      <div class="outlook-card">
+        <div class="src">Yuanta Research</div>
+        <div class="target mono">1,2x <span style="font-size:13px;color:var(--muted)">P/B dự phóng cả năm</span></div>
+        <div class="sub">Vùng định giá thấp hơn -1 độ lệch chuẩn 10 năm</div>
+        <p>ROE toàn ngành duy trì quanh 17%; tín dụng tăng tốc từ quý 1 (+3,3% QoQ) vượt xa tốc độ huy động vốn (+1,7%).</p>
+      </div>
+    </div>
+
+    <div class="quote-strip">"Chi phí vốn neo cao bào mòn NIM, nhưng khi các khoản vay trung–dài hạn hết ưu đãi và chuyển sang lãi suất thả nổi, cùng sự phục hồi tín dụng SME và cá nhân, NIM được kỳ vọng cải thiện dần trong nửa cuối năm" — nhận định chung của các CTCK về triển vọng ngành ngân hàng 2026.</div>
+
+    <div class="grid-3" style="margin-top:26px;">
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Kịch bản lợi nhuận</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">9 ngân hàng theo dõi bởi ACBS (VCB, CTG, BID, ACB, VPB, MB, HDB, STB, VIB) dự kiến tăng bình quân <b style="color:var(--gold)">25,6%</b> năm 2026; loại trừ STB chỉ còn <b style="color:var(--text)">18,7%</b>.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Kịch bản định giá</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">Với hơn 70% cổ phiếu ngân hàng giao dịch dưới P/E 10 lần, SHS đánh giá đây là cơ hội tích lũy dài hạn cho nhóm nền tảng vững: ACB, VCB, MBB, CTG.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Kịch bản rủi ro</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">Chi phí vốn neo cao, tỷ giá biến động và nợ nhóm 2 gia tăng là 3 biến số cần theo dõi sát trong nửa cuối năm — có thể khiến phân hóa lợi nhuận giữa các ngân hàng rõ nét hơn.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="eyebrow">Nguồn dữ liệu</div>
+    <div class="src-list">
+      <div>CafeF — Toàn cảnh lợi nhuận 27 ngân hàng 6T/2026</div>
+      <div>DNSE — Lợi nhuận quý 2 Techcombank tăng 22%</div>
+      <div>Báo Đầu tư / Tin nhanh Chứng khoán — Lợi nhuận ngân hàng Q2/2026</div>
+      <div>VietnamFinance — Lợi nhuận ngân hàng Q2/2026 tăng mạnh</div>
+      <div>Báo Phụ nữ VN / VnBusiness — Nợ xấu ngân hàng đầu 2026</div>
+      <div>Stockbiz / VnEconomy — Triển vọng ngành ngân hàng H2/2026</div>
+      <div>Người Quan Sát — Định giá cổ phiếu ngân hàng 2026 (SSI, Vietcap)</div>
+      <div>24HMoney — Phân tích định giá VPB 2026</div>
+      <div>Elibook / SHS — Triển vọng ngành ngân hàng 2026</div>
+      <div>Doanh Nhân VN — Định giá cổ phiếu ngân hàng (Yuanta Research)</div>
+      <div>Vietstock — Cổ phiếu ngân hàng T4, T5, T7/2026 & dòng vốn ngoại</div>
+      <div>VietnamPlus — Mùa ĐHCĐ ngân hàng 2026: tăng vốn, cổ tức</div>
+    </div>
+    <p class="disclaimer">Báo cáo tổng hợp mang tính nghiên cứu tham khảo dựa trên báo cáo công khai của NHNN, báo cáo tài chính doanh nghiệp và các công ty chứng khoán (SSI, Vietcap, VPBankS, SHS, Yuanta, ACBS, MBS) tính đến tháng 8/2026. Các khuyến nghị đầu tư, giá mục tiêu phản ánh quan điểm của tổ chức phát hành được trích dẫn, không phải khuyến nghị đầu tư từ báo cáo này. Nhà đầu tư nên đối chiếu báo cáo tài chính chính thức và tham vấn chuyên gia trước khi ra quyết định.</p>
+  </footer>
+</div>
+
+<script>
+/* ---------------- Ticker ---------------- */
+const tickerData = [
+  {n:'Vietcombank H1', v:'29.222 tỷ đ', d:'+33,5% YoY', up:true},
+  {n:'VietinBank H1', v:'25.868 tỷ đ', d:'+36,7% YoY', up:true},
+  {n:'VPBank H1', v:'18.900 tỷ đ', d:'+68% YoY', up:true},
+  {n:'Techcombank H1', v:'18.540 tỷ đ', d:'+22,5% YoY', up:true},
+  {n:'VIB H1', v:'5.180 tỷ đ', d:'+3% YoY', up:true},
+  {n:'Sacombank Q2 (dự phóng)', v:'~2.400 tỷ đ', d:'-34% YoY', up:false},
+  {n:'Tín dụng toàn hệ thống', v:'19,6 triệu tỷ đ', d:'+5,71% YTD', up:true},
+  {n:'Nợ xấu ngân hàng niêm yết', v:'1,99%', d:'▲ từ 1,87%', up:false},
+  {n:'Chỉ số ngành Ngân hàng (T7)', v:'635,01 điểm', d:'-8,13% MoM', up:false},
+  {n:'VN-Index (31/7/2026)', v:'1.735,49 điểm', d:'-7,04% MoM', up:false},
+  {n:'Khối ngoại bán ròng NH (T7)', v:'236 tỷ đ', d:'tháng thứ 6 liên tiếp', up:false},
+  {n:'P/B toàn ngành', v:'1,2 – 1,3x', d:'dưới -1 độ lệch chuẩn 10Y', up:true},
+];
+function buildTicker(){
+  const track = document.getElementById('tickerTrack');
+  let html = '';
+  for(let r=0;r<2;r++){
+    tickerData.forEach(t=>{
+      html += `<span class="tick">${t.n} <b>${t.v}</b> <span class="${t.up?'up':'down'}">${t.up?'▲':'▼'} ${t.d}</span></span>`;
+    });
+  }
+  track.innerHTML = html;
+}
+buildTicker();
+
+/* ---------------- Vanilla SVG chart helpers ---------------- */
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){ const el = document.createElementNS(NS, tag); for(const k in attrs) el.setAttribute(k, attrs[k]); return el; }
+function setupTip(tipEl, wrapEl){
+  return (evt, html)=>{
+    if(html===null){ tipEl.style.opacity=0; return; }
+    tipEl.innerHTML = html; tipEl.style.opacity = 1;
+    const wrapRect = wrapEl.getBoundingClientRect();
+    tipEl.style.left = (evt.clientX - wrapRect.left + 14) + 'px';
+    tipEl.style.top = (evt.clientY - wrapRect.top - 30) + 'px';
+  };
+}
+
+/* Vertical single-series bar chart (profit) */
+function drawVBarChart(containerId, tipId, labels, series, color, unit){
+  const container = document.getElementById(containerId);
+  const wrap = container.closest('.chart-wrap');
+  const tip = document.getElementById(tipId);
+  const showTip = setupTip(tip, wrap);
+
+  const W = 1040, H = 300, padL = 56, padR = 10, padTop = 16, padBottom = 34;
+  const plotW = W - padL - padR, plotH = H - padTop - padBottom;
+  const max = Math.max(...series) * 1.15;
+  const groupW = plotW / labels.length;
+  const barW = Math.min(groupW * 0.5, 66);
+
+  const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, preserveAspectRatio:'xMinYMin meet'});
+  const steps = 4;
+  for(let s=0; s<=steps; s++){
+    const val = (max/steps)*s;
+    const y = padTop + plotH - (val/max)*plotH;
+    svg.appendChild(svgEl('line', {x1:padL, x2:W-padR, y1:y, y2:y, stroke:'#1b2740', 'stroke-width':1}));
+    const t = svgEl('text', {x: padL-8, y: y+3, 'text-anchor':'end', fill:'#5D6F8C', 'font-size':'10', 'font-family':'IBM Plex Mono, monospace'});
+    t.textContent = Math.round(val).toLocaleString(); svg.appendChild(t);
+  }
+  labels.forEach((label, i)=>{
+    const cx = padL + groupW*i + groupW/2;
+    const v = series[i];
+    const h = (v/max) * plotH;
+    const x = cx - barW/2, y = padTop + plotH - h;
+    const rect = svgEl('rect', {x, y, width:barW, height:h, rx:5, fill:color, style:'cursor:pointer'});
+    rect.addEventListener('mousemove', e=> showTip(e, `<b>${label}</b>: ${v.toLocaleString()} ${unit}`));
+    rect.addEventListener('mouseleave', ()=> showTip(null));
+    svg.appendChild(rect);
+    const lt = svgEl('text', {x:cx, y:H-12, 'text-anchor':'middle', fill:'#E9EEF7', 'font-size':'12', 'font-family':'Inter, sans-serif'});
+    lt.textContent = label; svg.appendChild(lt);
+  });
+  container.innerHTML = ''; container.appendChild(svg);
+}
+
+/* Line chart (NPL trend) */
+function drawLineChart(containerId, tipId, labels, values, color, unit){
+  const container = document.getElementById(containerId);
+  const wrap = container.closest('.chart-wrap');
+  const tip = document.getElementById(tipId);
+  const showTip = setupTip(tip, wrap);
+
+  const W = 640, H = 260, padL = 44, padR = 18, padTop = 20, padBottom = 30;
+  const plotW = W - padL - padR, plotH = H - padTop - padBottom;
+  const min = Math.min(...values) * 0.9, max = Math.max(...values) * 1.1;
+  const stepX = labels.length > 1 ? plotW/(labels.length-1) : 0;
+  const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, preserveAspectRatio:'xMinYMin meet'});
+  const pts = values.map((v,i)=>{ const x = padL + stepX*i; const y = padTop + plotH - ((v-min)/(max-min))*plotH; return [x,y]; });
+  const steps = 4;
+  for(let s=0; s<=steps; s++){
+    const val = min + (max-min)/steps*s;
+    const y = padTop + plotH - ((val-min)/(max-min))*plotH;
+    svg.appendChild(svgEl('line', {x1:padL, x2:W-padR, y1:y, y2:y, stroke:'#1b2740', 'stroke-width':1}));
+    const t = svgEl('text', {x: padL-8, y:y+3, 'text-anchor':'end', fill:'#5D6F8C', 'font-size':'10', 'font-family':'IBM Plex Mono, monospace'});
+    t.textContent = val.toFixed(2)+unit; svg.appendChild(t);
+  }
+  const areaD = `M${pts[0][0]},${padTop+plotH} ` + pts.map(p=>`L${p[0]},${p[1]}`).join(' ') + ` L${pts[pts.length-1][0]},${padTop+plotH} Z`;
+  svg.appendChild(svgEl('path', {d:areaD, fill:color, 'fill-opacity':0.12, stroke:'none'}));
+  const lineD = 'M' + pts.map(p=>p.join(',')).join(' L');
+  svg.appendChild(svgEl('path', {d:lineD, fill:'none', stroke:color, 'stroke-width':2.5}));
+  pts.forEach((p,i)=>{
+    const c = svgEl('circle', {cx:p[0], cy:p[1], r:5, fill:color, style:'cursor:pointer'});
+    c.addEventListener('mousemove', e=> showTip(e, `<b>${labels[i]}</b>: ${values[i]}${unit}`));
+    c.addEventListener('mouseleave', ()=> showTip(null));
+    svg.appendChild(c);
+    const lt = svgEl('text', {x:p[0], y:H-8, 'text-anchor':'middle', fill:'#8B9BB4', 'font-size':'10.5', 'font-family':'IBM Plex Mono, monospace'});
+    lt.textContent = labels[i]; svg.appendChild(lt);
+  });
+  container.innerHTML = ''; container.appendChild(svg);
+}
+
+const profitLabels = ['VCB','CTG','VPB','TCB','VIB','VBB'];
+const profitValues = [29222,25868,18900,18540,5180,923];
+drawVBarChart('chartProfit','tipProfit', profitLabels, profitValues, '#3FA8E8', 'tỷ đ');
+
+drawLineChart('chartNPL','tipNPL', ['Cuối 2025','Q1/2026','Hiện tại (T7)','Dự phóng cuối 2026'], [1.87,1.9,1.99,1.8], '#F0475C', '%');
+
+window.addEventListener('resize', ()=>{
+  drawVBarChart('chartProfit','tipProfit', profitLabels, profitValues, '#3FA8E8', 'tỷ đ');
+  drawLineChart('chartNPL','tipNPL', ['Cuối 2025','Q1/2026','Hiện tại (T7)','Dự phóng cuối 2026'], [1.87,1.9,1.99,1.8], '#F0475C', '%');
+});
+</script>
+</body>
+</html>
