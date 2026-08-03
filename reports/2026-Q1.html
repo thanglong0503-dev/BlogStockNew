@@ -695,3 +695,14 @@ window.addEventListener('resize', ()=>{
 </script>
 </body>
 </html>
+/* Auto-resize iframe height để khớp với Streamlit, tránh double-scrollbar */
+function autoResizeIframe(){
+  try{
+    const h = document.documentElement.scrollHeight;
+    if (window.frameElement) window.frameElement.style.height = h + 'px';
+  }catch(e){}
+}
+window.addEventListener('load', autoResizeIframe);
+window.addEventListener('resize', autoResizeIframe);
+// gọi lại sau khi các biểu đồ SVG (chartShare, chartProfit, chartMargin) vẽ xong
+setTimeout(autoResizeIframe, 600);
