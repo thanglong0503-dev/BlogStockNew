@@ -1,1 +1,697 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khảo sát Ngành Chứng khoán Việt Nam — Q1–Q2/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0F1C;
+    --surface:#111A2C;
+    --surface-2:#152238;
+    --line:#25334D;
+    --gold:#D4A73E;
+    --gold-soft:#8f7530;
+    --up:#2FBE7C;
+    --down:#F0475C;
+    --text:#E9EEF7;
+    --muted:#8B9BB4;
+    --muted-2:#5D6F8C;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(ellipse 1200px 600px at 15% -10%, rgba(212,167,62,0.08), transparent 60%),
+      radial-gradient(ellipse 900px 500px at 100% 10%, rgba(47,190,124,0.05), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  h1,h2,h3,.disp{font-family:'Space Grotesk', sans-serif;}
+  a{color:inherit;}
 
+  /* ---- Ticker ---- */
+  .ticker-wrap{
+    position:sticky; top:0; z-index:50;
+    background:#080C15;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    white-space:nowrap;
+    padding:10px 0;
+  }
+  .ticker-track{
+    display:inline-flex;
+    animation: scroll-left 42s linear infinite;
+  }
+  .ticker-wrap:hover .ticker-track{animation-play-state:paused;}
+  @keyframes scroll-left{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  .tick{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:0 22px; font-size:12.5px; font-family:'IBM Plex Mono',monospace;
+    border-right:1px solid var(--line);
+    color:var(--muted);
+  }
+  .tick b{color:var(--text); font-weight:600;}
+  .tick .up{color:var(--up);}
+  .tick .down{color:var(--down);}
+
+  /* ---- Layout ---- */
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+  section{padding:72px 0;}
+  .eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:14px;
+  }
+  .eyebrow::before{content:""; width:26px; height:1px; background:var(--gold);}
+
+  /* ---- Hero ---- */
+  .hero{padding:100px 0 60px;}
+  .hero h1{
+    font-size:clamp(34px, 5.4vw, 62px);
+    font-weight:700;
+    letter-spacing:-0.02em;
+    line-height:1.05;
+    max-width:900px;
+  }
+  .hero h1 em{font-style:normal; color:var(--gold);}
+  .hero p.lede{
+    max-width:640px; margin-top:22px; font-size:17px; color:var(--muted); line-height:1.7;
+  }
+  .hero-meta{
+    display:flex; gap:28px; flex-wrap:wrap; margin-top:36px;
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--muted-2);
+  }
+  .hero-meta span b{color:var(--gold); display:block; font-size:11px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; font-weight:600;}
+
+  .kpi-row{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+    margin-top:52px; border-radius:10px; overflow:hidden;
+  }
+  .kpi{background:var(--surface); padding:24px 22px;}
+  .kpi .label{font-size:11.5px; color:var(--muted-2); text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px;}
+  .kpi .val{font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:700;}
+  .kpi .delta{font-family:'IBM Plex Mono',monospace; font-size:12.5px; margin-top:6px;}
+
+  /* ---- Section header ---- */
+  .sec-head{display:flex; justify-content:space-between; align-items:flex-end; gap:20px; margin-bottom:34px; flex-wrap:wrap;}
+  .sec-head h2{font-size:clamp(24px,3vw,34px); font-weight:700; letter-spacing:-0.01em;}
+  .sec-head p{color:var(--muted); max-width:480px; font-size:14.5px;}
+
+  /* ---- Cards / panels ---- */
+  .panel{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:26px;
+  }
+  .grid-2{display:grid; grid-template-columns:1.3fr 1fr; gap:20px;}
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  .grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  @media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+
+  canvas{max-width:100%;}
+  .chart-box{width:100%;}
+  .chart-box svg{width:100%; height:auto; overflow:visible;}
+  .chart-legend{display:flex; gap:18px; margin-bottom:14px; flex-wrap:wrap;}
+  .chart-legend .li{display:flex; align-items:center; gap:7px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted);}
+  .chart-legend .sw{width:10px; height:10px; border-radius:2px;}
+  .svg-tip{
+    position:absolute; pointer-events:none; background:#080C15; border:1px solid var(--line);
+    padding:6px 10px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
+    color:var(--text); opacity:0; transition:opacity .1s; white-space:nowrap; z-index:60;
+  }
+  .chart-wrap{position:relative;}
+
+  /* ---- Ranking table ---- */
+  .rank-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  .rank-table th{
+    text-align:left; font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:11px;
+    color:var(--muted-2); text-transform:uppercase; letter-spacing:.06em;
+    padding:0 10px 10px; border-bottom:1px solid var(--line);
+  }
+  .rank-table td{padding:11px 10px; border-bottom:1px solid rgba(37,51,77,0.5); vertical-align:middle;}
+  .rank-table tr:last-child td{border-bottom:none;}
+  .rank-table td.name{font-weight:600;}
+  .rank-table td.num{font-family:'IBM Plex Mono',monospace; text-align:right;}
+  .bar-cell{display:flex; align-items:center; gap:8px;}
+  .bar-track{flex:1; height:6px; background:var(--surface-2); border-radius:4px; overflow:hidden;}
+  .bar-fill{height:100%; background:linear-gradient(90deg, var(--gold-soft), var(--gold));}
+  .chip{
+    display:inline-flex; align-items:center; gap:4px; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
+    padding:2px 8px; border-radius:20px;
+  }
+  .chip.up{background:rgba(47,190,124,0.12); color:var(--up);}
+  .chip.down{background:rgba(240,71,92,0.12); color:var(--down);}
+
+  /* ---- Product cards ---- */
+  .prod-card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:22px; display:flex; flex-direction:column; gap:12px;}
+  .prod-card .tag{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--gold); text-transform:uppercase; letter-spacing:.08em;}
+  .prod-card h3{font-size:17px; font-weight:600;}
+  .prod-card p{font-size:13.5px; color:var(--muted); line-height:1.6;}
+  .prod-card .period{margin-top:auto; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted-2); border-top:1px solid var(--line); padding-top:12px;}
+
+  /* ---- Outlook ---- */
+  .outlook-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  @media(max-width:900px){.outlook-grid{grid-template-columns:1fr;}}
+  .outlook-card{background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:24px;}
+  .outlook-card .src{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--gold); text-transform:uppercase; margin-bottom:10px;}
+  .outlook-card .target{font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700; margin-bottom:6px;}
+  .outlook-card .sub{font-size:12.5px; color:var(--muted-2); margin-bottom:14px;}
+  .outlook-card p{font-size:13.5px; color:var(--muted); line-height:1.6;}
+
+  .quote-strip{
+    margin-top:26px; padding:22px 26px; border-left:3px solid var(--gold);
+    background:var(--surface); border-radius:0 10px 10px 0; font-size:14.5px; color:var(--muted);
+  }
+
+  footer{padding:50px 0 70px; border-top:1px solid var(--line); margin-top:20px;}
+  footer .src-list{display:grid; grid-template-columns:repeat(2,1fr); gap:8px 24px; font-size:12px; color:var(--muted-2); margin-top:18px;}
+  @media(max-width:700px){footer .src-list{grid-template-columns:1fr;}}
+  .disclaimer{margin-top:28px; font-size:12px; color:var(--muted-2); max-width:760px; line-height:1.7;}
+
+  .badge-live{
+    display:inline-flex; align-items:center; gap:6px; font-family:'IBM Plex Mono',monospace; font-size:11px;
+    color:var(--up); background:rgba(47,190,124,0.1); padding:4px 10px; border-radius:20px; margin-bottom:18px;
+  }
+  .dot{width:6px; height:6px; border-radius:50%; background:var(--up); animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+  .split-note{font-size:12px; color:var(--muted-2); margin-top:10px; line-height:1.6;}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge-live"><span class="dot"></span> DỮ LIỆU CẬP NHẬT ĐẾN 07/2026 · BCTC Q2/2026</div>
+    <h1>Ngành chứng khoán Việt Nam <em>phân hóa sâu</em> giữa cơn sóng margin kỷ lục</h1>
+    <p class="lede">Khảo sát toàn cảnh thị phần môi giới, lợi nhuận, cho vay ký quỹ, sản phẩm & chiến dịch marketing của các công ty chứng khoán (CTCK) trong Quý 1 và Quý 2/2026 — cùng góc nhìn dự phóng thị phần và kết quả kinh doanh nửa cuối năm.</p>
+    <div class="hero-meta">
+      <span><b>Phạm vi</b>~80 CTCK niêm yết & hoạt động tại VN</span>
+      <span><b>Nguồn</b>HOSE, HNX, BCTC doanh nghiệp, FiinTrade</span>
+      <span><b>Kỳ khảo sát</b>Q1/2026 – Q2/2026 (lũy kế 6T2026)</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="label">Dư nợ cho vay toàn ngành (Q2)</div>
+        <div class="val mono">453.800 <span style="font-size:14px;color:var(--muted)">tỷ đ</span></div>
+        <div class="delta chip up">▲ +7% so Q1 · +49% YoY</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Thị phần Top 10 môi giới HOSE</div>
+        <div class="val mono">65,19%</div>
+        <div class="delta chip down">▼ từ 69,05% (Q1) — thấp nhất từ Q4/2022</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Lợi nhuận toàn ngành ước tính (Q2)</div>
+        <div class="val mono">~15.100 <span style="font-size:14px;color:var(--muted)">tỷ đ</span></div>
+        <div class="delta chip up">▲ 65/77 CTCK báo lãi</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Quán quân lợi nhuận Q2</div>
+        <div class="val mono">VPBankS</div>
+        <div class="delta chip up">2.159 tỷ đ · gấp ~4 lần YoY</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARKET SHARE -->
+  <section id="thiphan">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Thị phần môi giới</div>
+        <h2>Top 10 thị phần môi giới HOSE — Q1 vs Q2/2026</h2>
+      </div>
+      <p>VPS duy trì ngôi đầu 22 quý liên tiếp nhưng biên độ dẫn trước bị thu hẹp mạnh; nhóm ngoài Top 10 (DNSE, chứng khoán số...) đang giành lại gần 5% thị phần từ các "ông lớn".</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="chart-legend">
+          <span class="li"><span class="sw" style="background:#2a3a58"></span>Q1/2026</span>
+          <span class="li"><span class="sw" style="background:#D4A73E"></span>Q2/2026</span>
+        </div>
+        <div class="chart-wrap"><div class="chart-box" id="chartShare"></div><div class="svg-tip" id="tipShare"></div></div>
+      </div>
+      <div class="panel">
+        <table class="rank-table">
+          <thead><tr><th>#</th><th>CTCK</th><th>Q2/2026</th><th>Biến động</th></tr></thead>
+          <tbody id="shareTableBody"></tbody>
+        </table>
+        <div class="split-note">Lũy kế 6T2026: VPS 14,14% · SSI 11,16% · TCBS 9,07% · Vietcap 7,2% · HSC 7,08% · MBS 5,07% · VNDirect 4,42% · VPBankS 3,21% · KIS 3,11% · Mirae Asset 2,85%.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFIT -->
+  <section id="loinhuan">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Báo cáo tài chính</div>
+        <h2>Lợi nhuận trước thuế: Q1 so với Q2/2026</h2>
+      </div>
+      <p>Bảng xếp hạng lợi nhuận đổi chủ liên tục: SSI vượt TCBS trong Q1, sang Q2 VPBankS bất ngờ vươn lên số 1 toàn ngành nhờ margin và tự doanh.</p>
+    </div>
+
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="chart-legend">
+        <span class="li"><span class="sw" style="background:#2a3a58"></span>Q1/2026 (tỷ đồng)</span>
+        <span class="li"><span class="sw" style="background:#D4A73E"></span>Q2/2026 (tỷ đồng)</span>
+      </div>
+      <div class="chart-wrap"><div class="chart-box" id="chartProfit"></div><div class="svg-tip" id="tipProfit"></div></div>
+    </div>
+
+    <div class="grid-3">
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Nhóm dẫn đầu Q2</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">Lần đầu tiên có <b style="color:var(--text)">6 CTCK</b> vượt mốc 1.000 tỷ đồng lợi nhuận trước thuế trong cùng một quý: VPBankS, TCBS, SSI, VPS, Chứng khoán HD và VNDirect — chiếm khoảng <b style="color:var(--gold)">62%</b> lợi nhuận toàn ngành.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Điểm sáng bứt phá</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">VNDirect lãi trước thuế <b style="color:var(--text)">1.106 tỷ đ</b> (+127% YoY) nhờ tiết giảm chi phí dự phòng; VPBankS lãi <b style="color:var(--text)">2.159 tỷ đ</b>, gấp gần 4 lần cùng kỳ.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Điểm tối</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">12/77 công ty thua lỗ. Chứng khoán VietinBank (CTS) giảm sâu <b style="color:var(--down)">91%</b> lợi nhuận do tự doanh thua lỗ và chi phí lãi vay tăng.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARGIN -->
+  <section id="margin">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Cho vay ký quỹ</div>
+        <h2>Dư nợ margin toàn ngành lập đỉnh lịch sử</h2>
+      </div>
+      <p>Margin tiếp tục là "xương sống" lợi nhuận, đóng góp tỷ trọng doanh thu tăng lên 36% (so với 28–30% các kỳ trước), bất chấp thanh khoản thị trường suy yếu.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="chart-wrap"><div class="chart-box" id="chartMargin"></div><div class="svg-tip" id="tipMargin"></div></div>
+        <div class="split-note">Dư nợ cho vay toàn thị trường (gồm margin + ứng trước tiền bán), đơn vị: nghìn tỷ đồng.</div>
+      </div>
+      <div class="panel">
+        <table class="rank-table">
+          <thead><tr><th>CTCK</th><th>Dư nợ Q2 (tỷ đ)</th><th>QoQ</th></tr></thead>
+          <tbody>
+            <tr><td class="name">TCBS</td><td class="num mono">51.500</td><td class="num"><span class="chip up">▲ +15%</span></td></tr>
+            <tr><td class="name">SSI</td><td class="num mono">40.473</td><td class="num"><span class="chip up">▲</span></td></tr>
+            <tr><td class="name">VPBankS</td><td class="num mono">38.177</td><td class="num"><span class="chip up">▲ mạnh</span></td></tr>
+            <tr><td class="name">VPS</td><td class="num mono">31.300</td><td class="num"><span class="chip up">▲ +39% so đầu năm</span></td></tr>
+            <tr><td class="name">HSC</td><td class="num mono">~29.000</td><td class="num"><span class="chip up">▲</span></td></tr>
+          </tbody>
+        </table>
+        <div class="split-note">62% mức tăng dư nợ toàn ngành trong Q2 đến từ nhóm 9 CTCK có <b style="color:var(--gold)">ngân hàng hậu thuẫn</b> (TCBS, VPBankS, LPBS, VCBS, SHS...).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS & MARKETING -->
+  <section id="sanpham">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Sản phẩm & Marketing</div>
+        <h2>Cuộc đua ưu đãi phí giao dịch & lãi suất margin</h2>
+      </div>
+      <p>Các CTCK đồng loạt tung sản phẩm margin lãi suất thấp, miễn phí giao dịch và đầu tư công nghệ AI để giữ chân & thu hút khách hàng mới trong bối cảnh cạnh tranh thị phần khốc liệt.</p>
+    </div>
+
+    <div class="grid-4">
+      <div class="prod-card">
+        <div class="tag">VPBankS</div>
+        <h3>Ưu đãi kép: 0% lãi vay margin / miễn phí giao dịch</h3>
+        <p>Khách hàng mở mới & khách hàng không hoạt động được chọn 1 trong 2 gói quyền lợi linh hoạt.</p>
+        <div class="period">26/02 – 31/07/2026</div>
+      </div>
+      <div class="prod-card">
+        <div class="tag">Chứng khoán An Bình (ABS)</div>
+        <h3>Gói margin từ 6,9%/năm</h3>
+        <p>Giải ngân linh hoạt ngay T0, minh bạch chi phí, áp dụng cho khách mở mới hoặc quay lại sau 6 tháng ngừng dùng margin.</p>
+        <div class="period">15/05 – 15/08/2026</div>
+      </div>
+      <div class="prod-card">
+        <div class="tag">BSC (BIDV)</div>
+        <h3>MR10 Plus — margin ưu đãi từ 0%</h3>
+        <p>Kèm chương trình miễn phí giao dịch với 1 tỷ đồng GTGD và cuộc thi "Cao thủ đầu tư 2026".</p>
+        <div class="period">Đang triển khai 2026</div>
+      </div>
+      <div class="prod-card">
+        <div class="tag">KIS Việt Nam</div>
+        <h3>Sản phẩm Margin K — lãi từ 5,5%/năm</h3>
+        <p>Mức lãi vay ký quỹ thấp gần bằng nửa mặt bằng chung 12–14%. Song song tổ chức cuộc thi Sáng tạo Nội dung Tài chính 2026 cho sinh viên.</p>
+        <div class="period">Từ T6/2026</div>
+      </div>
+      <div class="prod-card">
+        <div class="tag">TCBS</div>
+        <h3>Chuyển dịch "AI Native"</h3>
+        <p>Mở rộng hệ sinh thái AI Studio (OCR Suite, Image Generation, Guardrail, Tool Hub), triển khai Kiro IDE cho 100% nhân sự công nghệ.</p>
+        <div class="period">53.700 tài khoản mở mới Q1 (+124% YoY)</div>
+      </div>
+      <div class="prod-card">
+        <div class="tag">VPBankS</div>
+        <h3>Chiến lược 5 năm 2026–2030</h3>
+        <p>Đặt mục tiêu top 2 thị phần môi giới HOSE vào 2030, dẫn đầu về cho vay margin, tổng tài sản và lợi nhuận trước thuế.</p>
+        <div class="period">Công bố Q2/2026</div>
+      </div>
+      <div class="prod-card">
+        <div class="tag">Toàn ngành</div>
+        <h3>Chuẩn bị vốn đón nâng hạng</h3>
+        <p>Các CTCK lớn tăng vốn điều lệ thêm ~70.000 tỷ đồng trong 1 năm để mở dư địa cho vay (trần 200% vốn chủ sở hữu) trước thềm nâng hạng thị trường T9/2026.</p>
+        <div class="period">2025 – 2026</div>
+      </div>
+      <div class="prod-card">
+        <div class="tag">TCBS</div>
+        <h3>Huy động vốn quốc tế</h3>
+        <p>Huy động thành công 488 triệu USD vốn quốc tế trong Q1/2026, củng cố nguồn lực cho vay margin quy mô lớn.</p>
+        <div class="period">Q1/2026</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTLOOK -->
+  <section id="dubao">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Dự phóng · Nửa cuối 2026</div>
+        <h2>Ba kịch bản cho VN-Index & ngành chứng khoán</h2>
+      </div>
+      <p>Nâng hạng thị trường theo chuẩn FTSE Russell, nền tảng vĩ mô ổn định và tăng trưởng lợi nhuận doanh nghiệp là ba trụ đỡ chính được các công ty chứng khoán nhấn mạnh trong báo cáo chiến lược.</p>
+    </div>
+
+    <div class="outlook-grid">
+      <div class="outlook-card">
+        <div class="src">SSI Research</div>
+        <div class="target mono">1.920 <span style="font-size:15px;color:var(--muted)">→ 2.120 điểm</span></div>
+        <div class="sub">Kịch bản cơ sở → kịch bản tích cực, năm 2026</div>
+        <p>Vật liệu xây dựng & bán lẻ được dự báo tăng trưởng lợi nhuận nổi bật nhất; nhóm tài chính hưởng lợi từ nhu cầu tín dụng ổn định.</p>
+      </div>
+      <div class="outlook-card">
+        <div class="src">Vietcap</div>
+        <div class="target mono">1.955 <span style="font-size:15px;color:var(--muted)">→ 2.280 điểm</span></div>
+        <div class="sub">Mục tiêu cuối 2026 → dự phóng cuối 2027</div>
+        <p>Kỳ vọng đầu tư công tăng tốc thúc đẩy nhóm vật liệu xây dựng, dầu khí, điện; nâng hạng là chất xúc tác trung–dài hạn.</p>
+      </div>
+      <div class="outlook-card">
+        <div class="src">KIS Việt Nam</div>
+        <div class="target mono">T3 → T9/2026</div>
+        <div class="sub">Nhịp tăng theo chu kỳ từ vùng đáy</div>
+        <p>Chu kỳ tăng 3 năm có thể tạo đỉnh mới quanh tháng 9/2026, trước khi bước vào vùng đáy tiếp theo giai đoạn đầu–giữa 2027.</p>
+      </div>
+    </div>
+
+    <div class="quote-strip">
+      "Mục tiêu năm 2026 không chỉ là tăng trưởng điểm số, mà là xây dựng thị trường minh bạch, ổn định và có khả năng chống chịu cao" — trọng tâm điều hành gồm hoàn thiện pháp lý, vận hành hạ tầng KRX và chuẩn bị cơ chế đối tác bù trừ trung tâm (CCP) vào 2027, theo định hướng của Ủy ban Chứng khoán Nhà nước.
+    </div>
+
+    <div class="grid-3" style="margin-top:26px;">
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Dự báo thị phần</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">Xu hướng phân mảnh thị phần môi giới dự kiến tiếp diễn khi nhóm CTCK công nghệ/số (DNSE, VPBankS...) tiếp tục giành thị phần từ nhóm truyền thống nhờ phí thấp và trải nghiệm số.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Dự báo margin</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">Dư nợ cho vay toàn ngành được dự báo tiếp tục mở rộng, đặc biệt phục vụ nhà đầu tư nước ngoài khi quy định nâng hạng chính thức có hiệu lực từ tháng 9/2026.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px;">Dự báo lợi nhuận</div>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.7;">Nhóm CTCK có ngân hàng hậu thuẫn (TCBS, VPBankS...) dự kiến tiếp tục nới khoảng cách nhờ nguồn vốn giá rẻ, trong khi nhóm phụ thuộc môi giới chịu áp lực cạnh tranh phí.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="eyebrow">Nguồn dữ liệu</div>
+    <div class="src-list">
+      <div>HOSE — Thị phần môi giới Q1, Q2 & 6T/2026</div>
+      <div>Mekong ASEAN — So kè lợi nhuận CTCK đầu ngành</div>
+      <div>Vietstock — Dư nợ margin lập kỷ lục 454 ngàn tỷ</div>
+      <div>Tin nhanh Chứng khoán (ĐTCK) — Margin xương sống lợi nhuận</div>
+      <div>VietnamPlus / BNews — Triển vọng TTCK nửa cuối 2026</div>
+      <div>VnEconomy — Vietcap, HSC gia tăng thị phần Q1/2026</div>
+      <div>Vietnamnet — Lợi nhuận CTCK chia hai thái cực</div>
+      <div>DNSE, CafeF, Nguoiquansat, Baomoi — tổng hợp thị phần Q2/2026</div>
+    </div>
+    <p class="disclaimer">Dashboard tổng hợp mang tính khảo sát tham khảo dựa trên báo cáo công khai của HOSE, HNX và báo chí tài chính tính đến tháng 7/2026. Số liệu Q2/2026 tại thời điểm biên soạn dựa trên báo cáo tài chính đã công bố (77/~90 CTCK); các phần "dự báo" phản ánh quan điểm của các công ty chứng khoán/CTCK được trích dẫn, không phải khuyến nghị đầu tư. Vui lòng đối chiếu báo cáo tài chính chính thức trước khi ra quyết định.</p>
+  </footer>
+</div>
+
+<script>
+const brandColor = i => ['#D4A73E','#5B8DEF','#2FBE7C','#F0475C','#B48CE0','#3FC1C9','#E8975A','#8B9BB4','#6E7FE0','#D48ED4'][i % 10];
+
+/* ---------------- Ticker ---------------- */
+const tickerData = [
+  {n:'VPS', v:'12,61%', d:'-2,71pp', up:false},
+  {n:'SSI', v:'11,17%', d:'+0,03pp', up:true},
+  {n:'TCBS', v:'9,36%', d:'+0,51pp', up:true},
+  {n:'Vietcap', v:'7,00%', d:'-0,35pp', up:false},
+  {n:'HSC', v:'6,80%', d:'-0,50pp', up:false},
+  {n:'MBS', v:'4,79%', d:'-0,50pp', up:false},
+  {n:'VNDirect', v:'3,96%', d:'-0,82pp', up:false},
+  {n:'VPBankS', v:'3,57%', d:'+0,63pp', up:true},
+  {n:'KIS', v:'2,99%', d:'-0,22pp', up:false},
+  {n:'Mirae Asset', v:'2,94%', d:'mới vào Top10', up:true},
+  {n:'Dư nợ margin toàn ngành', v:'453.800 tỷ đ', d:'+7% QoQ', up:true},
+  {n:'LN trước thuế VPBankS (Q2)', v:'2.159 tỷ đ', d:'+~290% YoY', up:true},
+  {n:'LN trước thuế TCBS (Q2)', v:'2.097 tỷ đ', d:'+21% YoY', up:true},
+  {n:'LN trước thuế SSI (Q2)', v:'1.511 tỷ đ', d:'+32% YoY', up:true},
+];
+function buildTicker(){
+  const track = document.getElementById('tickerTrack');
+  let html = '';
+  for(let r=0;r<2;r++){
+    tickerData.forEach(t=>{
+      html += `<span class="tick">${t.n} <b>${t.v}</b> <span class="${t.up?'up':'down'}">${t.up?'▲':'▼'} ${t.d}</span></span>`;
+    });
+  }
+  track.innerHTML = html;
+}
+buildTicker();
+
+/* ---------------- Vanilla SVG chart helpers ---------------- */
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){
+  const el = document.createElementNS(NS, tag);
+  for(const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+}
+function setupTip(tipEl, wrapEl){
+  return (evt, html)=>{
+    if(html===null){ tipEl.style.opacity=0; return; }
+    tipEl.innerHTML = html;
+    tipEl.style.opacity = 1;
+    const wrapRect = wrapEl.getBoundingClientRect();
+    tipEl.style.left = (evt.clientX - wrapRect.left + 14) + 'px';
+    tipEl.style.top = (evt.clientY - wrapRect.top - 30) + 'px';
+  };
+}
+
+/* Horizontal grouped bar chart (for market share) */
+function drawHBarChart(containerId, tipId, labels, seriesA, seriesB, colorA, colorB, unit, maxVal){
+  const container = document.getElementById(containerId);
+  const wrap = container.closest('.chart-wrap');
+  const tip = document.getElementById(tipId);
+  const showTip = setupTip(tip, wrap);
+
+  const W = 640, rowH = 34, padL = 92, padR = 54, padTop = 8, padBottom = 8;
+  const H = labels.length * rowH + padTop + padBottom;
+  const plotW = W - padL - padR;
+  const max = maxVal || Math.max(...seriesA, ...seriesB) * 1.12;
+
+  const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, preserveAspectRatio:'xMinYMin meet'});
+
+  labels.forEach((label, i)=>{
+    const rowY = padTop + i * rowH;
+    const barH = 10, gap = 4;
+
+    // label
+    const txt = svgEl('text', {x: padL - 10, y: rowY + rowH/2 + 4, 'text-anchor':'end',
+      fill:'#E9EEF7', 'font-size':'12', 'font-family':'Inter, sans-serif'});
+    txt.textContent = label;
+    svg.appendChild(txt);
+
+    // gridline
+    svg.appendChild(svgEl('line', {x1:padL, x2:padL, y1:rowY, y2:rowY+rowH, stroke:'#1b2740', 'stroke-width':1}));
+
+    [ {v:seriesA[i], color:colorA, y: rowY + rowH/2 - barH - gap/2}, {v:seriesB[i], color:colorB, y: rowY + rowH/2 + gap/2} ]
+    .forEach(bar=>{
+      const w = Math.max((bar.v/max) * plotW, 2);
+      const rect = svgEl('rect', {x:padL, y:bar.y, width:w, height:barH, rx:3, fill:bar.color, style:'cursor:pointer'});
+      rect.addEventListener('mousemove', e=> showTip(e, `<b>${label}</b>: ${bar.v}${unit}`));
+      rect.addEventListener('mouseleave', ()=> showTip(null));
+      svg.appendChild(rect);
+      const valTxt = svgEl('text', {x: padL + w + 6, y: bar.y + barH - 1.5, fill:'#8B9BB4',
+        'font-size':'10', 'font-family':'IBM Plex Mono, monospace'});
+      valTxt.textContent = bar.v + unit;
+      svg.appendChild(valTxt);
+    });
+  });
+
+  container.innerHTML = '';
+  container.appendChild(svg);
+}
+
+/* Vertical grouped bar chart (for profit) */
+function drawVBarChart(containerId, tipId, labels, seriesA, seriesB, colorA, colorB, unit){
+  const container = document.getElementById(containerId);
+  const wrap = container.closest('.chart-wrap');
+  const tip = document.getElementById(tipId);
+  const showTip = setupTip(tip, wrap);
+
+  const W = 720, H = 300, padL = 46, padR = 10, padTop = 16, padBottom = 34;
+  const plotW = W - padL - padR, plotH = H - padTop - padBottom;
+  const max = Math.max(...seriesA, ...seriesB) * 1.15;
+  const groupW = plotW / labels.length;
+  const barW = Math.min(groupW * 0.32, 40);
+
+  const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, preserveAspectRatio:'xMinYMin meet'});
+
+  // gridlines + y labels
+  const steps = 4;
+  for(let s=0; s<=steps; s++){
+    const val = (max/steps)*s;
+    const y = padTop + plotH - (val/max)*plotH;
+    svg.appendChild(svgEl('line', {x1:padL, x2:W-padR, y1:y, y2:y, stroke:'#1b2740', 'stroke-width':1}));
+    const t = svgEl('text', {x: padL-8, y: y+3, 'text-anchor':'end', fill:'#5D6F8C', 'font-size':'9.5', 'font-family':'IBM Plex Mono, monospace'});
+    t.textContent = Math.round(val).toLocaleString();
+    svg.appendChild(t);
+  }
+
+  labels.forEach((label, i)=>{
+    const cx = padL + groupW*i + groupW/2;
+    [ {v:seriesA[i], color:colorA, dx:-barW*0.6}, {v:seriesB[i], color:colorB, dx:barW*0.6} ]
+    .forEach(bar=>{
+      const h = (bar.v/max) * plotH;
+      const x = cx + bar.dx - barW/2;
+      const y = padTop + plotH - h;
+      const rect = svgEl('rect', {x, y, width:barW, height:h, rx:4, fill:bar.color, style:'cursor:pointer'});
+      rect.addEventListener('mousemove', e=> showTip(e, `<b>${label}</b>: ${bar.v.toLocaleString()} ${unit}`));
+      rect.addEventListener('mouseleave', ()=> showTip(null));
+      svg.appendChild(rect);
+    });
+    const lt = svgEl('text', {x:cx, y:H-12, 'text-anchor':'middle', fill:'#E9EEF7', 'font-size':'11.5', 'font-family':'Inter, sans-serif'});
+    lt.textContent = label;
+    svg.appendChild(lt);
+  });
+
+  container.innerHTML = '';
+  container.appendChild(svg);
+}
+
+/* Line/area chart (for margin growth) */
+function drawLineChart(containerId, tipId, labels, values, color, unit){
+  const container = document.getElementById(containerId);
+  const wrap = container.closest('.chart-wrap');
+  const tip = document.getElementById(tipId);
+  const showTip = setupTip(tip, wrap);
+
+  const W = 640, H = 240, padL = 44, padR = 18, padTop = 20, padBottom = 30;
+  const plotW = W - padL - padR, plotH = H - padTop - padBottom;
+  const min = Math.min(...values) * 0.92, max = Math.max(...values) * 1.06;
+  const stepX = labels.length > 1 ? plotW/(labels.length-1) : 0;
+
+  const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, preserveAspectRatio:'xMinYMin meet'});
+
+  const pts = values.map((v,i)=>{
+    const x = padL + stepX*i;
+    const y = padTop + plotH - ((v-min)/(max-min))*plotH;
+    return [x,y];
+  });
+
+  // gridlines
+  const steps = 4;
+  for(let s=0; s<=steps; s++){
+    const val = min + (max-min)/steps*s;
+    const y = padTop + plotH - ((val-min)/(max-min))*plotH;
+    svg.appendChild(svgEl('line', {x1:padL, x2:W-padR, y1:y, y2:y, stroke:'#1b2740', 'stroke-width':1}));
+    const t = svgEl('text', {x: padL-8, y:y+3, 'text-anchor':'end', fill:'#5D6F8C', 'font-size':'10', 'font-family':'IBM Plex Mono, monospace'});
+    t.textContent = Math.round(val)+'k';
+    svg.appendChild(t);
+  }
+
+  // area path
+  const areaD = `M${pts[0][0]},${padTop+plotH} ` + pts.map(p=>`L${p[0]},${p[1]}`).join(' ') + ` L${pts[pts.length-1][0]},${padTop+plotH} Z`;
+  svg.appendChild(svgEl('path', {d:areaD, fill:color, 'fill-opacity':0.12, stroke:'none'}));
+
+  // line path
+  const lineD = 'M' + pts.map(p=>p.join(',')).join(' L');
+  svg.appendChild(svgEl('path', {d:lineD, fill:'none', stroke:color, 'stroke-width':2.5}));
+
+  // points + labels
+  pts.forEach((p,i)=>{
+    const c = svgEl('circle', {cx:p[0], cy:p[1], r:5, fill:color, style:'cursor:pointer'});
+    c.addEventListener('mousemove', e=> showTip(e, `<b>${labels[i]}</b>: ${values[i]}${unit}`));
+    c.addEventListener('mouseleave', ()=> showTip(null));
+    svg.appendChild(c);
+    const lt = svgEl('text', {x:p[0], y:H-8, 'text-anchor':'middle', fill:'#8B9BB4', 'font-size':'11', 'font-family':'IBM Plex Mono, monospace'});
+    lt.textContent = labels[i];
+    svg.appendChild(lt);
+  });
+
+  container.innerHTML = '';
+  container.appendChild(svg);
+}
+
+/* ---------------- Share chart ---------------- */
+const shareLabels = ['VPS','SSI','TCBS','Vietcap','HSC','MBS','VNDirect','VPBankS','KIS','Mirae Asset'];
+const shareQ1 = [15.32,11.14,8.85,7.35,7.30,5.29,4.78,2.94,3.21,2.60];
+const shareQ2 = [12.61,11.17,9.36,7.00,6.80,4.79,3.96,3.57,2.99,2.94];
+
+drawHBarChart('chartShare','tipShare', shareLabels, shareQ1, shareQ2, '#2a3a58', '#D4A73E', '%', 16.5);
+
+// share table
+const shareBody = document.getElementById('shareTableBody');
+let rows = '';
+shareLabels.forEach((l,i)=>{
+  const delta = (shareQ2[i]-shareQ1[i]);
+  const up = delta >= 0;
+  rows += `<tr>
+    <td class="num mono">${i+1}</td>
+    <td class="name">${l}</td>
+    <td class="num">
+      <div class="bar-cell">
+        <div class="bar-track"><div class="bar-fill" style="width:${(shareQ2[i]/16*100).toFixed(0)}%"></div></div>
+        <span class="mono">${shareQ2[i].toFixed(2)}%</span>
+      </div>
+    </td>
+    <td class="num"><span class="chip ${up?'up':'down'}">${up?'▲':'▼'} ${Math.abs(delta).toFixed(2)}pp</span></td>
+  </tr>`;
+});
+shareBody.innerHTML = rows;
+
+/* ---------------- Profit chart ---------------- */
+drawVBarChart('chartProfit','tipProfit',
+  ['SSI','VPS','TCBS','VNDirect','VPBankS'],
+  [1593,1547,1458,681,514],
+  [1511,1378,2097,1106,2159],
+  '#2a3a58', '#D4A73E', 'tỷ đ');
+
+/* ---------------- Margin chart ---------------- */
+drawLineChart('chartMargin','tipMargin', ['Q4/2025','Q1/2026','Q2/2026'], [406,415,453.8], '#D4A73E', 'k tỷ đ');
+
+window.addEventListener('resize', ()=>{
+  drawHBarChart('chartShare','tipShare', shareLabels, shareQ1, shareQ2, '#2a3a58', '#D4A73E', '%', 16.5);
+  drawVBarChart('chartProfit','tipProfit', ['SSI','VPS','TCBS','VNDirect','VPBankS'], [1593,1547,1458,681,514], [1511,1378,2097,1106,2159], '#2a3a58', '#D4A73E', 'tỷ đ');
+  drawLineChart('chartMargin','tipMargin', ['Q4/2025','Q1/2026','Q2/2026'], [406,415,453.8], '#D4A73E', 'k tỷ đ');
+});
+</script>
+</body>
+</html>
