@@ -36,4 +36,4 @@ selected_path = reports[labels.index(selected_label)]
 html_data = read_html(str(selected_path))
 
 # height đủ lớn để hiển thị toàn bộ nội dung, không cắt, không cuộn lồng
-components.html(html_data, height=6200, scrolling=False)
+components.html(html_data, height=10000, scrolling=False)
