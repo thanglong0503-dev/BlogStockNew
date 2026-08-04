@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khảo sát đối thủ &amp; Nghiên cứu thị trường — Digital Sales Non-Broker | CTCK Việt Nam 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0F16;
+    --panel:#111827;
+    --panel-2:#161F30;
+    --line:#232F45;
+    --ink:#E7ECF5;
+    --ink-dim:#93A0BA;
+    --ink-mute:#5D6B87;
+    --gold:#D4A843;
+    --gold-dim:#8A733A;
+    --teal:#33D6C0;
+    --red:#E8615A;
+    --blue:#5B8CFF;
+    --r1: VPS; --r2: SSI; --r3: TCBS;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(1100px 600px at 85% -10%, rgba(212,168,67,0.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, rgba(51,214,192,0.08), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    font-size:15px;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .display{font-family:'Space Grotesk',sans-serif;}
+  a{color:var(--teal);}
+  ::selection{background:rgba(212,168,67,0.35);}
+
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,15,22,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:14px 40px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:20px;
+  }
+  .nav-brand{display:flex; align-items:center; gap:10px; font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:0.02em; white-space:nowrap;}
+  .nav-brand .dot{width:8px;height:8px;border-radius:50%;background:var(--gold); box-shadow:0 0 12px var(--gold);}
+  .nav-links{display:flex; gap:22px; flex-wrap:wrap; font-size:12.5px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:0.06em;}
+  .nav-links a{color:var(--ink-dim); text-decoration:none; transition:color .15s;}
+  .nav-links a:hover{color:var(--gold);}
+
+  /* HERO */
+  header.hero{
+    padding:100px 40px 70px;
+    max-width:1240px; margin:0 auto;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.12em;
+    color:var(--gold); text-transform:uppercase;
+    border:1px solid var(--gold-dim); border-radius:100px; padding:6px 14px;
+    margin-bottom:28px;
+  }
+  h1.hero-title{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:clamp(34px,4.6vw,64px);
+    line-height:1.06;
+    letter-spacing:-0.01em;
+    max-width:920px;
+  }
+  h1.hero-title .accent{color:var(--gold);}
+  .hero-sub{
+    margin-top:26px; max-width:680px; color:var(--ink-dim); font-size:16.5px;
+  }
+  .hero-meta{
+    margin-top:44px; display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+  }
+  .hero-meta div{background:var(--panel); padding:18px 20px;}
+  .hero-meta .k{font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-mute); margin-bottom:6px;}
+  .hero-meta .v{font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:600;}
+
+  section{padding:74px 40px; max-width:1240px; margin:0 auto; border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:8px; flex-wrap:wrap;}
+  .sec-num{font-family:'JetBrains Mono',monospace; color:var(--gold-dim); font-size:14px;}
+  h2{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:clamp(24px,3vw,34px); letter-spacing:-0.01em;}
+  .sec-desc{color:var(--ink-dim); max-width:760px; margin:16px 0 40px; font-size:15px;}
+
+  /* TABLE */
+  .table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--panel);}
+  table{width:100%; border-collapse:collapse; min-width:720px;}
+  th{
+    text-align:left; font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:0.06em; color:var(--ink-mute); padding:14px 18px; border-bottom:1px solid var(--line);
+    background:var(--panel-2); white-space:nowrap;
+  }
+  td{padding:14px 18px; border-bottom:1px solid var(--line); font-size:14px; vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:rgba(212,168,67,0.035);}
+  td.num{font-family:'JetBrains Mono',monospace; color:var(--teal);}
+  .tag{display:inline-block; font-size:11px; font-family:'JetBrains Mono',monospace; padding:3px 9px; border-radius:100px; border:1px solid var(--line); color:var(--ink-dim);}
+  .tag.gold{color:var(--gold); border-color:var(--gold-dim);}
+  .tag.teal{color:var(--teal); border-color:#1F6A61;}
+  .tag.red{color:var(--red); border-color:#7A3230;}
+  strong.company{color:var(--ink); font-weight:600;}
+
+  /* MARKET SHARE BARS */
+  .bars{display:flex; flex-direction:column; gap:14px; margin-top:10px;}
+  .bar-row{display:grid; grid-template-columns:130px 1fr 64px; align-items:center; gap:16px;}
+  .bar-name{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px;}
+  .bar-track{height:22px; background:var(--panel-2); border-radius:6px; overflow:hidden; border:1px solid var(--line);}
+  .bar-fill{height:100%; border-radius:6px; background:linear-gradient(90deg, var(--gold-dim), var(--gold));}
+  .bar-val{font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--teal); text-align:right;}
+
+  /* CARD GRID */
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  .grid-2{display:grid; grid-template-columns:repeat(2,1fr); gap:18px;}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px;}
+  .card h3{font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:600; margin-bottom:10px; display:flex; align-items:center; gap:10px;}
+  .card p{color:var(--ink-dim); font-size:13.8px;}
+  .card .num-big{font-family:'JetBrains Mono',monospace; font-size:30px; color:var(--gold); font-weight:600; margin-bottom:4px;}
+
+  /* CHATBOT */
+  .bot-card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:10px;}
+  .bot-head{display:flex; justify-content:space-between; align-items:flex-start;}
+  .bot-name{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px; color:var(--gold);}
+  .bot-co{font-size:12px; color:var(--ink-mute); font-family:'JetBrains Mono',monospace;}
+  .bot-tech{font-size:11px; color:var(--teal); font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:.05em;}
+  .bot-feat{font-size:13.3px; color:var(--ink-dim);}
+
+  /* FUNNEL */
+  .funnel{display:flex; flex-direction:column; gap:0; margin-top:20px;}
+  .funnel-step{
+    display:grid; grid-template-columns:44px 1fr; gap:20px; padding:22px 0; border-top:1px solid var(--line);
+  }
+  .funnel-step:first-child{border-top:none;}
+  .funnel-idx{font-family:'JetBrains Mono',monospace; color:var(--gold); font-size:14px;}
+  .funnel-title{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:17px; margin-bottom:6px;}
+  .funnel-body{color:var(--ink-dim); font-size:14px;}
+  .funnel-body ul{margin:10px 0 0 18px;}
+  .funnel-body li{margin-bottom:6px;}
+  .kpi-strip{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;}
+  .kpi{background:var(--panel-2); border:1px solid var(--line); border-radius:8px; padding:6px 12px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--teal);}
+
+  /* PROMO PLAN */
+  .promo-card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:26px; position:relative; overflow:hidden;}
+  .promo-card::before{content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--gold);}
+  .promo-title{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; margin-bottom:6px;}
+  .promo-window{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-mute); margin-bottom:16px;}
+  .promo-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px;}
+  .promo-block .lbl{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-mute); margin-bottom:5px; font-family:'JetBrains Mono',monospace;}
+  .promo-block .val{font-size:13.6px; color:var(--ink-dim);}
+
+  .callout{
+    background:var(--panel-2); border:1px solid var(--line); border-left:3px solid var(--teal);
+    border-radius:10px; padding:18px 22px; font-size:14px; color:var(--ink-dim); margin-top:24px;
+  }
+  .callout b{color:var(--ink);}
+
+  .voc-scale{display:flex; flex-direction:column; gap:16px; margin-top:24px;}
+  .voc-item{display:grid; grid-template-columns:220px 1fr; gap:20px; align-items:center;}
+  .voc-label{font-size:13.5px; color:var(--ink-dim);}
+  .voc-track{height:10px; background:var(--panel-2); border-radius:6px; overflow:hidden; border:1px solid var(--line);}
+  .voc-fill{height:100%; border-radius:6px;}
+
+  footer{padding:50px 40px 70px; max-width:1240px; margin:0 auto; color:var(--ink-mute); font-size:12.5px;}
+  footer .src{margin-top:18px; line-height:1.9; font-family:'JetBrains Mono',monospace; font-size:11.5px;}
+
+  @media (max-width:900px){
+    .hero-meta{grid-template-columns:repeat(2,1fr);}
+    .grid-3{grid-template-columns:1fr;}
+    .grid-2{grid-template-columns:1fr;}
+    .promo-grid{grid-template-columns:1fr;}
+    .voc-item{grid-template-columns:1fr; gap:8px;}
+    nav{padding:14px 20px;}
+    .nav-links{display:none;}
+    header.hero, section{padding-left:20px; padding-right:20px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand"><span class="dot"></span> CTCK.INTEL / 2026</div>
+  <div class="nav-links">
+    <a href="#thi-phan">01 Thị phần</a>
+    <a href="#phi-margin">02 Phí &amp; Margin</a>
+    <a href="#digital-sale">03 Digital Sale</a>
+    <a href="#chatbot">04 AI Chatbot</a>
+    <a href="#uu-dai">05 Ưu đãi</a>
+    <a href="#voc">06 VOC</a>
+    <a href="#toi-uu">07 Tối ưu</a>
+    <a href="#de-xuat">08 Đề xuất</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">● Competitive Intelligence — Ngành Chứng khoán Việt Nam</div>
+  <h1 class="hero-title">Khảo sát đối thủ &amp; nghiên cứu thị trường <span class="accent">Digital Sales / Non-Broker</span> — Margin, Phí, Chatbot AI &amp; VOC</h1>
+  <p class="hero-sub">
+    Báo cáo tổng hợp toàn cảnh 13 công ty chứng khoán (CTCK) hàng đầu Việt Nam: mô hình bán hàng số không qua môi giới,
+    cấu trúc phí giao dịch, lãi suất margin, hệ sinh thái chatbot AI, chương trình ưu đãi hiện hành, và khung đo lường
+    mức độ hài lòng khách hàng (VOC/CSAT) — kèm khuyến nghị tối ưu chi tiết nhằm thúc đẩy doanh số kênh số.
+  </p>
+  <div class="hero-meta">
+    <div><div class="k">Phạm vi</div><div class="v">13 CTCK</div></div>
+    <div><div class="k">Kỳ dữ liệu</div><div class="v">Q2 – T7/2026</div></div>
+    <div><div class="k">Thị phần Top10 HOSE</div><div class="v">65,19%</div></div>
+    <div><div class="k">Dư nợ margin toàn TT</div><div class="v">~410.000 tỷ</div></div>
+  </div>
+</header>
+
+<!-- 01 THỊ PHẦN -->
+<section id="thi-phan">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Bức tranh thị phần môi giới — bối cảnh cạnh tranh</h2></div>
+  <p class="sec-desc">
+    Thị phần môi giới cổ phiếu trên HOSE quý II/2026 tiếp tục phân hóa: nhóm dẫn đầu (VPS, SSI, TCBS) giữ khoảng cách
+    nhưng đang bị thu hẹp bởi nhóm bám đuổi (VPBankS, Mirae Asset, KIS). Tổng thị phần Top 10 giảm còn 65,19% — thấp
+    nhất kể từ Q4/2022 — cho thấy dòng vốn nhà đầu tư F0 đang phân tán sang các CTCK có ưu đãi mạnh và trải nghiệm số tốt hơn.
+  </p>
+  <div class="bars">
+    <div class="bar-row"><div class="bar-name">VPS</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-val">12,61%</div></div>
+    <div class="bar-row"><div class="bar-name">SSI</div><div class="bar-track"><div class="bar-fill" style="width:88.6%"></div></div><div class="bar-val">11,17%</div></div>
+    <div class="bar-row"><div class="bar-name">TCBS</div><div class="bar-track"><div class="bar-fill" style="width:74.2%"></div></div><div class="bar-val">9,36%</div></div>
+    <div class="bar-row"><div class="bar-name">Vietcap</div><div class="bar-track"><div class="bar-fill" style="width:55.5%"></div></div><div class="bar-val">7,00%</div></div>
+    <div class="bar-row"><div class="bar-name">HSC</div><div class="bar-track"><div class="bar-fill" style="width:53.9%"></div></div><div class="bar-val">6,80%</div></div>
+    <div class="bar-row"><div class="bar-name">MBS</div><div class="bar-track"><div class="bar-fill" style="width:38%"></div></div><div class="bar-val">4,79%</div></div>
+    <div class="bar-row"><div class="bar-name">VNDIRECT</div><div class="bar-track"><div class="bar-fill" style="width:31.4%"></div></div><div class="bar-val">3,96%</div></div>
+    <div class="bar-row"><div class="bar-name">VPBankS</div><div class="bar-track"><div class="bar-fill" style="width:28.3%"></div></div><div class="bar-val">3,57%</div></div>
+    <div class="bar-row"><div class="bar-name">KIS Việt Nam</div><div class="bar-track"><div class="bar-fill" style="width:23.7%"></div></div><div class="bar-val">2,99%</div></div>
+    <div class="bar-row"><div class="bar-name">Mirae Asset</div><div class="bar-track"><div class="bar-fill" style="width:23.3%"></div></div><div class="bar-val">2,94%</div></div>
+  </div>
+  <div class="callout">
+    <b>Insight cạnh tranh:</b> VPS mất 2,71 điểm % thị phần trong một quý (từ 15,32% → 12,61%) dù vẫn giữ vị trí số 1 suốt
+    22 quý liên tiếp — dấu hiệu cho thấy nhóm khách hàng "phí rẻ/margin rẻ" đang dịch chuyển sang các đối thủ có ưu đãi
+    mới nổi bật hơn (VPBankS, KIS, Mirae Asset). Đây là cơ hội để các CTCK tầm trung dùng chiến dịch Digital Sale
+    nhắm đúng nhóm khách hàng "inactive" hoặc đang cân nhắc chuyển sàn.
+  </div>
+</section>
+
+<!-- 02 PHÍ & MARGIN -->
+<section id="phi-margin">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Ma trận so sánh: Phí giao dịch &amp; Lãi suất Margin</h2></div>
+  <p class="sec-desc">
+    Mặt bằng lãi suất margin tiêu chuẩn nửa đầu 2026 dao động <strong class="company">12% – 14%/năm</strong>, tăng 0,5–1 điểm %
+    so với cuối 2025 do áp lực lãi suất huy động. Phí giao dịch phổ biến <strong class="company">0,1% – 0,35%</strong> giá trị
+    giao dịch/chiều, ngoài ra có phí trả Sở GDCK cố định 0,027%.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Công ty</th><th>Phí giao dịch (online)</th><th>Lãi suất margin phổ thông</th><th>Sản phẩm margin đặc biệt</th><th>Mô hình bán hàng</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong class="company">VPS</strong></td><td class="num">0,10% – 0,20%</td><td class="num">~14%/năm</td><td>Nhiều gói theo hạn mức tài sản (SmartOne)</td><td><span class="tag gold">Digital + Môi giới lai</span></td></tr>
+        <tr><td><strong class="company">SSI</strong></td><td class="num">0,05% – 0,15%</td><td class="num">Phổ thông cao, có ưu đãi hoàn lãi</td><td>Chương trình hoàn lãi margin theo đợt</td><td><span class="tag">Môi giới truyền thống + App</span></td></tr>
+        <tr><td><strong class="company">TCBS</strong></td><td class="num">0% (miễn phí)</td><td class="num">13,5%/năm</td><td>Margin theo tài sản đảm bảo linh hoạt (iWealth)</td><td><span class="tag teal">Digital thuần / Non-broker</span></td></tr>
+        <tr><td><strong class="company">Vietcap (VCI)</strong></td><td class="num">0,15% – 0,35%</td><td class="num">13%/năm</td><td>—</td><td><span class="tag">Môi giới truyền thống</span></td></tr>
+        <tr><td><strong class="company">HSC</strong></td><td class="num">0,15% – 0,20%</td><td class="num">12,5% – 14%/năm</td><td>—</td><td><span class="tag">Môi giới truyền thống</span></td></tr>
+        <tr><td><strong class="company">MBS</strong></td><td class="num">0,08% – 0,30%</td><td class="num">~13%/năm</td><td>Gói MD24</td><td><span class="tag gold">Digital + AI (Dolphin)</span></td></tr>
+        <tr><td><strong class="company">VNDIRECT</strong></td><td class="num">0% – 0,35% (KH mới)</td><td class="num">12,5% – 13,5%/năm</td><td>Miễn phí giao dịch trọn đời (điều kiện)</td><td><span class="tag">Môi giới + Digital</span></td></tr>
+        <tr><td><strong class="company">VPBankS</strong></td><td class="num">0% (Zero Fee, có kỳ hạn)</td><td class="num">0% dư nợ &lt;100tr (Zero Margin)</td><td>Gói kép Zero Fee / Zero Margin</td><td><span class="tag teal">Digital Sale / Non-broker</span></td></tr>
+        <tr><td><strong class="company">KIS Việt Nam</strong></td><td class="num">Từ 0,10%</td><td class="num">Margin K từ 5,5%/năm</td><td>Margin K — lãi thấp bậc nhất TT + Flash Trading Day (hoàn phí 15 &amp; 25 hàng tháng)</td><td><span class="tag teal">Digital Sale / Non-broker</span></td></tr>
+        <tr><td><strong class="company">BSC</strong></td><td class="num">Miễn phí (GTGD ưu đãi 1 tỷ)</td><td class="num">MR10 Plus từ 0%</td><td>Giải đấu "Cao thủ đầu tư 2026"</td><td><span class="tag">Môi giới + Gamification</span></td></tr>
+        <tr><td><strong class="company">Shinhan (SSV)</strong></td><td class="num">0% trọn đời (KH mới)</td><td class="num">0% (2 tháng đầu) → 6,8% (tới 6 tháng)</td><td>Không có môi giới chăm sóc — thuần digital</td><td><span class="tag teal">Digital Sale / Non-broker</span></td></tr>
+        <tr><td><strong class="company">FPTS</strong></td><td class="num">0,06% – 0,15%</td><td class="num">~13%/năm</td><td>—</td><td><span class="tag">Môi giới truyền thống</span></td></tr>
+        <tr><td><strong class="company">Pinetree / AIS</strong></td><td class="num">0% (miễn phí dài hạn)</td><td class="num">Cạnh tranh thấp</td><td>Chính sách 0 phí là chiến lược cốt lõi</td><td><span class="tag teal">Digital thuần / Non-broker</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout">
+    <b>Nhận định chiến lược:</b> Nhóm CTCK có vốn rẻ từ ngân hàng mẹ (TCBS, VPBankS, Shinhan) đang dùng đòn bẩy "chi phí vốn thấp"
+    để đẩy lãi suất margin về gần 0%, biến margin thành công cụ thu hút mở mới thay vì nguồn thu chính — buộc nhóm truyền
+    thống (SSI, HSC, Vietcap) phải cạnh tranh bằng chất lượng tư vấn và hệ sinh thái sản phẩm thay vì giá.
+  </div>
+</section>
+
+<!-- 03 DIGITAL SALE / NON-BROKER -->
+<section id="digital-sale">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Mô hình Phòng Digital Sale / Non-Broker</h2></div>
+  <p class="sec-desc">
+    "Digital Sale Non-Broker" là mô hình bán hàng không qua chuyên viên môi giới trực tiếp chăm sóc — toàn bộ hành trình
+    từ tiếp cận, mở tài khoản (eKYC), kích hoạt đến giao dịch đầu tiên diễn ra tự động trên app/web, được vận hành bởi
+    một đội ngũ digital sale tập trung vào tối ưu phễu chuyển đổi, remarketing và chatbot/CSKH tự động thay vì network cá nhân của môi giới.
+  </p>
+  <div class="grid-3">
+    <div class="card">
+      <h3>⚡ eKYC — 1-3 phút</h3>
+      <div class="num-big">100%</div>
+      <p>SSI, VPS, TCBS đều cho phép mở tài khoản online hoàn toàn qua camera + chụp CCCD gắn chip, không cần ra quầy — đây là chuẩn tối thiểu bắt buộc cho kênh digital sale năm 2026.</p>
+    </div>
+    <div class="card">
+      <h3>🎯 Nhóm khách hàng "Inactive"</h3>
+      <div class="num-big">90 ngày</div>
+      <p>VPBankS định nghĩa & nhắm mục tiêu rõ ràng nhóm KH mở tài khoản trước nhưng không giao dịch 90 ngày, NAV &lt; 3 triệu — mô hình đáng học hỏi để tái kích hoạt qua kênh digital thay vì môi giới gọi tay.</p>
+    </div>
+    <div class="card">
+      <h3>🔁 Referral Code</h3>
+      <div class="num-big">Mã GT</div>
+      <p>Mô hình "mã người giới thiệu" (VD: VPS mã "BRJU") thay thế vai trò môi giới truyền thống bằng affiliate/KOL — chi phí biến đổi, dễ đo ROI hơn lương cứng môi giới.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <b>Khoảng trống thị trường:</b> Phần lớn CTCK vẫn dùng eKYC + ưu đãi phí là "vũ khí" chính cho digital sale, nhưng
+    <b>chưa cá nhân hoá theo hành vi</b> (ví dụ: gợi ý gói margin theo khẩu vị rủi ro ngay lúc mở tài khoản), và
+    <b>chưa tự động hoá tái kích hoạt</b> khách hàng inactive bằng trigger dữ liệu thời gian thực — đây chính là dư địa
+    tối ưu lớn nhất cho Phòng Digital Sale Non-broker (xem mục 07).
+  </div>
+</section>
+
+<!-- 04 CHATBOT AI -->
+<section id="chatbot">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Thống kê hệ sinh thái AI Chatbot ngành chứng khoán</h2></div>
+  <p class="sec-desc">
+    Làn sóng "AI Native" đang định hình lại kênh CSKH và tư vấn tự động. Phần lớn chatbot hiện dùng Generative AI /
+    AI Agent để trả lời câu hỏi và phân tích; VPBankS là đơn vị đầu tiên công bố ứng dụng Agentic AI (AI có khả năng hành động độc lập).
+  </p>
+  <div class="grid-3">
+    <div class="bot-card">
+      <div class="bot-head"><div><div class="bot-name">Viva</div><div class="bot-co">VPS</div></div><span class="tag">Chatbot CSKH</span></div>
+      <div class="bot-tech">Generative AI</div>
+      <div class="bot-feat">Hỗ trợ khách hàng giao dịch, giải đáp thắc mắc trên toàn bộ app/web VPS — một trong những chatbot chứng khoán ra mắt sớm nhất thị trường (từ 2022).</div>
+    </div>
+    <div class="bot-card">
+      <div class="bot-head"><div><div class="bot-name">Cú Doha</div><div class="bot-co">SSI</div></div><span class="tag">Trợ lý sản phẩm</span></div>
+      <div class="bot-tech">Generative AI</div>
+      <div class="bot-feat">Giới thiệu sản phẩm, cung cấp thông tin tài chính, kết quả kinh doanh và báo cáo phân tích cho nhà đầu tư.</div>
+    </div>
+    <div class="bot-card">
+      <div class="bot-head"><div><div class="bot-name">Mập Thông Thái</div><div class="bot-co">TCBS</div></div><span class="tag teal">AI Native</span></div>
+      <div class="bot-tech">AI Agent</div>
+      <div class="bot-feat">Phân tích danh mục đầu tư, hỗ trợ pháp lý và tài chính — nằm trong định hướng "AI Native" toàn diện của TCBS.</div>
+    </div>
+    <div class="bot-card">
+      <div class="bot-head"><div><div class="bot-name">Dolphin AI</div><div class="bot-co">MBS</div></div><span class="tag">Trợ lý số</span></div>
+      <div class="bot-tech">Generative AI</div>
+      <div class="bot-feat">Trợ lý AI trên nền tảng số MBS, hỗ trợ tra cứu và tương tác khách hàng.</div>
+    </div>
+    <div class="bot-card">
+      <div class="bot-head"><div><div class="bot-name">DVKH Chatbot</div><div class="bot-co">VNDIRECT</div></div><span class="tag">Phân tích kỹ thuật</span></div>
+      <div class="bot-tech">Generative AI</div>
+      <div class="bot-feat">Phân tích kỹ thuật, báo cáo thị trường, dự đoán xu hướng và gợi ý đầu tư cho nhà đầu tư cá nhân.</div>
+    </div>
+    <div class="bot-card">
+      <div class="bot-head"><div><div class="bot-name">Mira Assistant</div><div class="bot-co">Mirae Asset</div></div><span class="tag">Gợi ý danh mục</span></div>
+      <div class="bot-tech">Generative AI</div>
+      <div class="bot-feat">Gợi ý cổ phiếu, xây dựng danh mục theo khẩu vị rủi ro, phân tích thị trường.</div>
+    </div>
+    <div class="bot-card">
+      <div class="bot-head"><div><div class="bot-name">Ensa</div><div class="bot-co">DNSE</div></div><span class="tag">CSKH</span></div>
+      <div class="bot-tech">Generative AI</div>
+      <div class="bot-feat">Chatbot vận hành hỗ trợ khách hàng trên nền tảng giao dịch DNSE.</div>
+    </div>
+    <div class="bot-card">
+      <div class="bot-head"><div><div class="bot-name">Ysuri</div><div class="bot-co">Yuanta</div></div><span class="tag">CSKH</span></div>
+      <div class="bot-tech">Generative AI</div>
+      <div class="bot-feat">Trợ lý ảo hỗ trợ nhà đầu tư trên nền tảng Yuanta Việt Nam.</div>
+    </div>
+    <div class="bot-card">
+      <div class="bot-head"><div><div class="bot-name">hiDragon</div><div class="bot-co">VDSC</div></div><span class="tag">CSKH</span></div>
+      <div class="bot-tech">Generative AI</div>
+      <div class="bot-feat">Chatbot hỗ trợ tương tác và tra cứu thông tin cho khách hàng VDSC.</div>
+    </div>
+    <div class="bot-card" style="border-color:var(--gold-dim); background:linear-gradient(180deg, rgba(212,168,67,0.06), var(--panel));">
+      <div class="bot-head"><div><div class="bot-name">StockGuru</div><div class="bot-co">VPBankS</div></div><span class="tag gold">Tiên phong</span></div>
+      <div class="bot-tech">Agentic AI (AI hành động độc lập)</div>
+      <div class="bot-feat">Được giới thiệu là trợ lý tư vấn đầu tư đầu tiên tại Việt Nam ứng dụng Agentic AI — xử lý khối lượng dữ liệu lớn, khác biệt so với Generative AI/AI Agent thông thường.</div>
+    </div>
+    <div class="bot-card">
+      <div class="bot-head"><div><div class="bot-name">AI Chatbot</div><div class="bot-co">StockTraders</div></div><span class="tag">Dự báo TT</span></div>
+      <div class="bot-tech">Generative AI</div>
+      <div class="bot-feat">Xây dựng trên nền dữ liệu chuyên sâu thị trường Việt Nam, hỗ trợ phân tích và dự báo cho nhà đầu tư cá nhân.</div>
+    </div>
+  </div>
+  <div class="callout">
+    <b>Cảnh báo rủi ro thương hiệu:</b> Sự phổ biến của chatbot AI chính hãng cũng tạo điều kiện cho các đối tượng lừa
+    đảo mạo danh "chuyên gia AI" của SSI, VPS, MBS, VNDirect qua Zalo/Telegram. Khuyến nghị: mọi chatbot chính thức cần
+    có watermark xác thực trong app và banner cảnh báo rõ ràng trên các kênh CSKH.
+  </div>
+</section>
+
+<!-- 05 ƯU ĐÃI -->
+<section id="uu-dai">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Chương trình ưu đãi hiện hành — so sánh cơ chế</h2></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Công ty</th><th>Tên chương trình</th><th>Cơ chế chính</th><th>Đối tượng</th><th>Thời hạn</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong class="company">VPBankS</strong></td><td>Zero Fee / Zero Margin (chọn 1)</td><td class="num">0% phí GD hoặc 0% lãi margin dư nợ &lt;100tr</td><td>KH mở mới + KH inactive (90 ngày, NAV&lt;3tr)</td><td class="num">26/02 – 31/07/2026</td></tr>
+        <tr><td><strong class="company">SSI</strong></td><td>Hoàn lãi Margin &amp; Miễn phí GD</td><td class="num">Miễn phí GD 12 tháng (tiểu khoản đuôi 1&amp;6) + hoàn lãi margin</td><td>KH mở mới / margin chưa sử dụng</td><td class="num">Theo đợt, gia hạn định kỳ</td></tr>
+        <tr><td><strong class="company">BSC</strong></td><td>Cao Thủ Đầu Tư 2026</td><td class="num">Giải đấu hiệu suất + miễn phí GD với GTGD 1 tỷ cho KH quay lại</td><td>KH hiện hữu quay lại + KH mới</td><td class="num">Cả năm 2026</td></tr>
+        <tr><td><strong class="company">Shinhan (SSV)</strong></td><td>"Chọn Shinhan, Trọn Đời Không Phí"</td><td class="num">0% phí GD trọn đời (KH mới) + 0% margin 2 tháng, 6,8% tới 6 tháng (hạn mức tới 10 tỷ)</td><td>KH cá nhân mở mới, không có môi giới chăm sóc</td><td class="num">Margin ưu đãi tới 30/06/2026</td></tr>
+        <tr><td><strong class="company">KIS Việt Nam</strong></td><td>Margin K + Flash Trading Day</td><td class="num">Margin từ 5,5%/năm + hoàn 100% phí GD ngày 15 &amp; 25 hàng tháng</td><td>Toàn bộ KH giao dịch Bluechip</td><td class="num">Nửa cuối 2026</td></tr>
+        <tr><td><strong class="company">VNDIRECT</strong></td><td>Miễn phí giao dịch</td><td class="num">0% phí GD cho KH đủ điều kiện</td><td>KH mở mới</td><td class="num">Đang triển khai</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout">
+    <b>Pattern chung:</b> 5/6 chương trình lớn nhất thị trường đều xoay quanh 2 đòn bẩy — <b>miễn/giảm phí giao dịch</b>
+    và <b>ưu đãi lãi suất margin có thời hạn/hạn mức</b> — gần như không có sự khác biệt hoá bằng giá trị gia tăng phi tài
+    chính (dữ liệu độc quyền, cố vấn AI cá nhân hoá, quyền lợi phi giao dịch). Đây là khoảng trống định vị cho chương
+    trình ưu đãi thế hệ tiếp theo (xem mục 08).
+  </div>
+</section>
+
+<!-- 06 VOC -->
+<section id="voc">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Khảo sát Tiếng nói Khách hàng (VOC) &amp; Mức độ hài lòng</h2></div>
+  <p class="sec-desc">
+    Hiện chưa có đơn vị xếp hạng độc lập công khai một bộ điểm CSAT/NPS chuẩn hoá cho toàn ngành CTCK Việt Nam — do đó
+    phần này tổng hợp <b>tín hiệu định tính từ dữ liệu công khai</b> (phản ánh của nhà đầu tư, cảnh báo từ CTCK, xu hướng
+    đầu tư công nghệ) và đề xuất khung đo lường VOC chuẩn để Phòng Digital Sale triển khai nội bộ.
+  </p>
+
+  <h3 style="font-family:'Space Grotesk',sans-serif; font-size:16px; margin-bottom:14px;">Điểm nghẽn trải nghiệm phổ biến nhất (tổng hợp định tính)</h3>
+  <div class="voc-scale">
+    <div class="voc-item"><div class="voc-label">Tổng đài CSKH quá tải, thời gian chờ lâu</div><div class="voc-track"><div class="voc-fill" style="width:88%; background:var(--red);"></div></div></div>
+    <div class="voc-item"><div class="voc-label">Dữ liệu khách hàng không đồng bộ giữa các kênh</div><div class="voc-track"><div class="voc-fill" style="width:74%; background:var(--red);"></div></div></div>
+    <div class="voc-item"><div class="voc-label">Biểu phí/lãi suất khó so sánh minh bạch (cách tính ngày 360/365)</div><div class="voc-track"><div class="voc-fill" style="width:68%; background:#E8A15A;"></div></div></div>
+    <div class="voc-item"><div class="voc-label">Rủi ro mạo danh tư vấn viên/chatbot AI qua Zalo, Telegram</div><div class="voc-track"><div class="voc-fill" style="width:60%; background:#E8A15A;"></div></div></div>
+    <div class="voc-item"><div class="voc-label">Thiếu cá nhân hoá gợi ý sản phẩm theo khẩu vị rủi ro</div><div class="voc-track"><div class="voc-fill" style="width:55%; background:var(--gold);"></div></div></div>
+  </div>
+
+  <h3 style="font-family:'Space Grotesk',sans-serif; font-size:16px; margin:38px 0 14px;">Khung đo lường VOC đề xuất cho Phòng Digital Sale</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3>📊 Chỉ số định lượng</h3>
+      <p><b>CSAT</b> sau mỗi lượt tương tác chatbot/CSKH (thang 1-5) · <b>NPS</b> quý theo từng phân khúc KH (F0 / active / inactive) ·
+      <b>CES</b> (Customer Effort Score) đo độ dễ dùng của quy trình mở TK &amp; nạp/rút tiền · <b>Tỷ lệ giải quyết ở lượt chạm đầu (FCR)</b> của chatbot AI.</p>
+    </div>
+    <div class="card">
+      <h3>🗣️ Chỉ số định tính</h3>
+      <p>Phân tích cảm xúc (sentiment analysis) trên review app store, group Facebook/Zalo cộng đồng đầu tư ·
+      Phỏng vấn sâu nhóm KH rời bỏ (churn interview) · Theo dõi từ khoá than phiền lặp lại trên tổng đài/chatbot log.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <b>Khuyến nghị triển khai:</b> Gắn khảo sát CSAT ngay sau phiên chat với AI chatbot (1 câu hỏi, 1 chạm) và một khảo
+    sát NPS định kỳ hàng quý gửi qua app-push — dữ liệu này nuôi trực tiếp vào công cụ tái kích hoạt khách hàng inactive
+    của Digital Sale (mục 07), tạo vòng lặp cải tiến liên tục thay vì khảo sát rời rạc.
+  </div>
+</section>
+
+<!-- 07 TỐI ƯU -->
+<section id="toi-uu">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Khuyến nghị tối ưu chi tiết — thúc đẩy doanh số kênh Digital Sale Non-Broker</h2></div>
+  <p class="sec-desc">
+    Phễu chuyển đổi digital sale gồm 5 giai đoạn. Dưới đây là hành động tối ưu cụ thể cho từng giai đoạn, đối chiếu với
+    khoảng trống đã phát hiện ở các mục trên.
+  </p>
+  <div class="funnel">
+    <div class="funnel-step">
+      <div class="funnel-idx">01</div>
+      <div>
+        <div class="funnel-title">Thu hút (Acquisition)</div>
+        <div class="funnel-body">
+          <ul>
+            <li>Landing page so sánh phí/margin theo thời gian thực (bảng "tính thử chi phí" — nhập vốn, số ngày nắm giữ → ra ngay số tiền lãi margin thực tế, giải quyết pain point "khó so sánh minh bạch" ở mục 06).</li>
+            <li>Mở rộng mô hình mã giới thiệu (referral) sang KOL tài chính vi mô (micro-influencer) thay vì chỉ affiliate lớn — chi phí trên mỗi tài khoản (CPA) thấp hơn, đo lường chính xác qua UTM/mã GT.</li>
+            <li>Retarget theo phân khúc: quảng cáo riêng cho nhóm đang cân nhắc chuyển sàn (dựa insight thị phần Top 10 đang phân tán ở mục 01).</li>
+          </ul>
+          <div class="kpi-strip"><span class="kpi">Mục tiêu: CPA giảm 15-20%</span><span class="kpi">Landing conversion &gt;8%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-idx">02</div>
+      <div>
+        <div class="funnel-title">Kích hoạt (Onboarding &amp; eKYC)</div>
+        <div class="funnel-body">
+          <ul>
+            <li>Chuẩn hoá eKYC dưới 3 phút (chuẩn ngành hiện tại) — bổ sung bước "Khảo sát khẩu vị rủi ro" ngay trong luồng eKYC để chatbot AI gợi ý gói margin/sản phẩm phù hợp ngay khi tài khoản kích hoạt.</li>
+            <li>Chatbot chủ động nhắn tin chào mừng trong 5 phút đầu sau khi mở tài khoản, kèm mã ưu đãi giao dịch đầu tiên — rút ngắn thời gian tới giao dịch đầu tiên (Time-to-First-Trade).</li>
+          </ul>
+          <div class="kpi-strip"><span class="kpi">Time-to-First-Trade &lt;24h</span><span class="kpi">Tỷ lệ kích hoạt &gt;70%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-idx">03</div>
+      <div>
+        <div class="funnel-title">Chuyển đổi giao dịch (Trading Activation)</div>
+        <div class="funnel-body">
+          <ul>
+            <li>Áp dụng cơ chế ưu đãi "kép, có lựa chọn" theo mô hình VPBankS (Zero Fee <i>hoặc</i> Zero Margin) — cho khách hàng tự chọn theo hành vi giao dịch của họ thay vì áp một gói cứng.</li>
+            <li>Học theo KIS: gắn "ngày hội giao dịch không phí" định kỳ hàng tháng để tạo nhịp giao dịch trở lại, đặc biệt hiệu quả với nhóm KH inactive.</li>
+          </ul>
+          <div class="kpi-strip"><span class="kpi">GTGD bình quân/KH +25%</span><span class="kpi">Tỷ lệ dùng margin +15%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-idx">04</div>
+      <div>
+        <div class="funnel-title">Tái kích hoạt (Reactivation) khách hàng Inactive</div>
+        <div class="funnel-body">
+          <ul>
+            <li>Xây dựng "sổ tay inactive" tự động (định nghĩa như VPBankS: 90 ngày không giao dịch, NAV thấp) — kích hoạt chuỗi email/push/chatbot cá nhân hoá thay vì gọi điện tay như môi giới truyền thống.</li>
+            <li>Ưu đãi phân tầng theo NAV: NAV càng thấp thì ưu đãi phí càng cao (đảo ngược mô hình VIP truyền thống) để tối đa hoá số lượng khách hàng quay lại giao dịch.</li>
+          </ul>
+          <div class="kpi-strip"><span class="kpi">Tỷ lệ reactivate &gt;20%/quý</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-idx">05</div>
+      <div>
+        <div class="funnel-title">Giữ chân &amp; Nâng cấp (Retention &amp; Upsell)</div>
+        <div class="funnel-body">
+          <ul>
+            <li>Chatbot AI chuyển từ vai trò "trả lời câu hỏi" sang "AI Agent hành động" theo hướng VPBankS StockGuru — tự động đề xuất tái cơ cấu danh mục, cảnh báo margin call sớm.</li>
+            <li>Vòng lặp VOC: mọi phản hồi CSAT tiêu cực (≤3/5) tự động tạo ticket ưu tiên xử lý trong 4 giờ — đóng vòng lặp giữa mục 06 (VOC) và giữ chân khách hàng.</li>
+          </ul>
+          <div class="kpi-strip"><span class="kpi">Churn rate -10%</span><span class="kpi">NPS +15 điểm/năm</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 ĐỀ XUẤT CHƯƠNG TRÌNH ƯU ĐÃI SẮP TỚI -->
+<section id="de-xuat">
+  <div class="sec-head"><span class="sec-num">08</span><h2>Đề xuất chương trình ưu đãi chi tiết cho giai đoạn tới</h2></div>
+  <p class="sec-desc">
+    04 chương trình được thiết kế để lấp khoảng trống định vị đã phát hiện: thiếu cá nhân hoá, thiếu giá trị phi tài
+    chính, và chưa khai thác tốt vòng lặp VOC + AI Agent.
+  </p>
+  <div class="grid-2" style="margin-top:10px;">
+    <div class="promo-card">
+      <div class="promo-title">01 · "Zero Tuần Đầu" — Gói kích hoạt thông minh</div>
+      <div class="promo-window">Đề xuất chạy: 8 tuần / Đối tượng: KH mở mới qua kênh Digital Sale</div>
+      <p class="sec-desc" style="margin:0; font-size:13.6px;">Miễn 100% phí giao dịch + 0% lãi margin trong 7 ngày giao dịch đầu tiên, kích hoạt tự động ngay sau khi hoàn tất khảo sát khẩu vị rủi ro trong luồng eKYC (không cần thao tác thêm).</div>
+      <div class="promo-grid">
+        <div class="promo-block"><div class="lbl">Cơ chế</div><div class="val">Auto-trigger qua chatbot AI ngay sau eKYC, không cần đăng ký</div></div>
+        <div class="promo-block"><div class="lbl">KPI</div><div class="val">Time-to-First-Trade &lt;24h, tỷ lệ kích hoạt &gt;70%</div></div>
+      </div>
+    </div>
+    <div class="promo-card">
+      <div class="promo-title">02 · "Margin Bậc Thang Ngược" — Ưu đãi tái kích hoạt</div>
+      <div class="promo-window">Đề xuất chạy: theo quý, liên tục / Đối tượng: KH inactive 90 ngày, NAV thấp</div>
+      <p class="sec-desc" style="margin:0; font-size:13.6px;">Lãi suất margin giảm dần theo NAV càng thấp (đảo ngược ưu đãi VIP truyền thống): NAV &lt;5tr → 0% margin 30 ngày; NAV 5-20tr → 6,8%/năm 60 ngày. Gửi qua chuỗi push/chatbot cá nhân hoá.</div>
+      <div class="promo-grid">
+        <div class="promo-block"><div class="lbl">Cơ chế</div><div class="val">Định nghĩa tự động inactive + phân tầng NAV</div></div>
+        <div class="promo-block"><div class="lbl">KPI</div><div class="val">Tỷ lệ reactivate &gt;20%/quý</div></div>
+      </div>
+    </div>
+    <div class="promo-card">
+      <div class="promo-title">03 · "AI Agent Đồng Hành" — Giá trị phi tài chính</div>
+      <div class="promo-window">Đề xuất chạy: liên tục / Đối tượng: toàn bộ KH đã kích hoạt</div>
+      <p class="sec-desc" style="margin:0; font-size:13.6px;">Miễn phí truy cập tính năng Agentic AI cảnh báo margin call sớm + đề xuất tái cơ cấu danh mục hàng tuần — khác biệt hoá bằng công nghệ (theo hướng StockGuru) thay vì chỉ giảm phí, giúp giữ chân nhóm KH có kinh nghiệm.</div>
+      <div class="promo-grid">
+        <div class="promo-block"><div class="lbl">Cơ chế</div><div class="val">Tính năng độc quyền trong app, không cần đăng ký</div></div>
+        <div class="promo-block"><div class="lbl">KPI</div><div class="val">NPS +15 điểm, churn -10%</div></div>
+      </div>
+    </div>
+    <div class="promo-card">
+      <div class="promo-title">04 · "Ngày Hội Không Phí" định kỳ + Giải đấu hiệu suất</div>
+      <div class="promo-window">Đề xuất chạy: 2 ngày/tháng cố định + giải đấu quý / Đối tượng: toàn bộ KH</div>
+      <p class="sec-desc" style="margin:0; font-size:13.6px;">Kết hợp mô hình Flash Trading Day (KIS) với gamification kiểu giải đấu (BSC): hoàn 100% phí giao dịch vào 2 ngày cố định/tháng + bảng xếp hạng hiệu suất theo quý với giải thưởng học bổng/CFA nhằm tăng tần suất giao dịch và cộng đồng hoá thương hiệu.</div>
+      <div class="promo-grid">
+        <div class="promo-block"><div class="lbl">Cơ chế</div><div class="val">Hoàn phí tự động + leaderboard trong app</div></div>
+        <div class="promo-block"><div class="lbl">KPI</div><div class="val">GTGD bình quân/KH +25%</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Báo cáo tổng hợp phục vụ mục đích nghiên cứu thị trường nội bộ — dữ liệu được tổng hợp từ các nguồn công khai (báo chí tài chính, website CTCK) tính đến tháng 7-8/2026. Số liệu phí, lãi suất và chương trình ưu đãi biến động theo thời gian; cần đối chiếu biểu phí chính thức của từng CTCK trước khi ra quyết định.</div>
+  <div class="src">
+    Nguồn tham khảo: VnEconomy · Tuổi Trẻ Online · Vietstock · Thời báo Tài chính Việt Nam · Tin nhanh Chứng khoán (ĐTCK) ·
+    Người Quan Sát · Mekong Asean · KISVN · TOPI · Wecan Group · FPT-IS · Casin.vn · Robins.vn · Shinhan Securities Việt Nam · VPBankS
+  </div>
+</footer>
+
+</body>
+</html>
