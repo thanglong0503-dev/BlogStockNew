@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FTSE Russell nâng hạng — Dự báo danh mục &amp; Chiến lược giải ngân</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c1420;
+    --bg-alt:#0f1a29;
+    --panel:#131f31;
+    --panel-2:#0f1826;
+    --hairline:rgba(201,162,39,0.22);
+    --hairline-soft:rgba(255,255,255,0.07);
+    --gold:#c9a227;
+    --gold-soft:#e8cf7a;
+    --jade:#3fa77a;
+    --jade-soft:#7fd2ab;
+    --red:#c1543c;
+    --ink:#eef1f4;
+    --ink-dim:#a9b6c6;
+    --ink-faint:#71829a;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(201,162,39,0.08), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(63,167,122,0.06), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:var(--gold-soft);}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--gold);
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--gold);display:inline-block;}
+
+  /* ---------- Ticker tape ---------- */
+  .ticker{
+    background:#080d16;
+    border-bottom:1px solid var(--hairline);
+    overflow:hidden;
+    white-space:nowrap;
+    position:sticky;top:0;z-index:50;
+  }
+  .ticker-track{
+    display:inline-flex;
+    animation:scroll-left 62s linear infinite;
+    padding:9px 0;
+  }
+  @keyframes scroll-left{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  .tick{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-dim);
+    padding:0 18px;
+    border-right:1px solid var(--hairline-soft);
+  }
+  .tick b{color:var(--gold-soft);font-weight:600;}
+  @media (prefers-reduced-motion: reduce){
+    .ticker-track{animation:none;}
+    .ticker{overflow-x:auto;}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{padding:64px 0 40px;border-bottom:1px solid var(--hairline);}
+  .hero-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:48px;align-items:end;}
+  .hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1.12;margin:16px 0 18px;}
+  .hero h1 em{font-style:normal;color:var(--gold-soft);}
+  .hero p.lede{color:var(--ink-dim);font-size:16.5px;max-width:56ch;}
+  .countdown{
+    background:var(--panel);
+    border:1px solid var(--hairline);
+    padding:26px 26px 22px;
+    text-align:center;
+  }
+  .countdown .num{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:76px;
+    line-height:1;
+    color:var(--gold);
+  }
+  .countdown .lbl{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);
+    margin-top:8px;
+  }
+  .countdown .date{
+    margin-top:16px;padding-top:14px;border-top:1px solid var(--hairline-soft);
+    font-size:13px;color:var(--ink-dim);
+  }
+  .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;}
+  .badge{
+    font-family:'IBM Plex Mono', monospace;font-size:11.5px;color:var(--ink-dim);
+    border:1px solid var(--hairline-soft);padding:5px 10px;border-radius:2px;
+  }
+
+  section{padding:56px 0;border-bottom:1px solid var(--hairline-soft);}
+  section h2{font-size:clamp(22px,2.6vw,28px);margin:10px 0 14px;}
+  section > .wrap > p.intro{color:var(--ink-dim);max-width:74ch;margin-bottom:32px;font-size:15.5px;}
+
+  .disclaimer{
+    background:rgba(193,84,60,0.08);
+    border:1px solid rgba(193,84,60,0.35);
+    padding:16px 18px;
+    font-size:13.5px;color:var(--ink-dim);
+    margin:26px 0 0;
+  }
+  .disclaimer b{color:var(--red);}
+
+  /* ---------- Roadmap ---------- */
+  .roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hairline);border:1px solid var(--hairline);}
+  .rstep{background:var(--panel);padding:22px 20px;position:relative;}
+  .rstep .pct{font-family:'Fraunces',serif;font-weight:700;font-size:34px;color:var(--gold);}
+  .rstep .cum{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--jade-soft);margin-top:2px;}
+  .rstep .when{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-faint);margin-top:10px;text-transform:uppercase;letter-spacing:0.06em;}
+  .rstep p{font-size:13.5px;color:var(--ink-dim);margin:8px 0 0;}
+  .rstep.now{outline:1px solid var(--gold);outline-offset:-1px;}
+  @media(max-width:800px){.roadmap{grid-template-columns:1fr 1fr;}}
+
+  /* ---------- Table / tabs ---------- */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+  .tab-btn{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.04em;
+    background:transparent;border:1px solid var(--hairline-soft);color:var(--ink-dim);
+    padding:8px 14px;cursor:pointer;transition:all .15s ease;
+  }
+  .tab-btn:hover{border-color:var(--gold);color:var(--gold-soft);}
+  .tab-btn.active{background:var(--gold);border-color:var(--gold);color:#0c1420;font-weight:600;}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  thead th{
+    text-align:left;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--ink-faint);padding:10px 12px;border-bottom:1px solid var(--hairline);
+  }
+  tbody td{padding:12px;border-bottom:1px solid var(--hairline-soft);color:var(--ink-dim);vertical-align:top;}
+  tbody tr:hover{background:rgba(201,162,39,0.04);}
+  td.tk{font-family:'IBM Plex Mono',monospace;color:var(--gold-soft);font-weight:600;letter-spacing:0.02em;}
+  .cap-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.04em;
+    padding:2px 7px;border:1px solid var(--hairline-soft);color:var(--ink-faint);white-space:nowrap;
+  }
+  .cap-large{border-color:rgba(201,162,39,0.5);color:var(--gold-soft);}
+  .cap-mid{border-color:rgba(127,210,171,0.4);color:var(--jade-soft);}
+  .table-scroll{overflow-x:auto;border:1px solid var(--hairline-soft);}
+  .table-note{font-size:12.5px;color:var(--ink-faint);margin-top:14px;}
+
+  /* ---------- Sector cards ---------- */
+  .sector-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--hairline-soft);border:1px solid var(--hairline-soft);}
+  .sec-card{background:var(--panel);padding:22px 20px;}
+  .sec-card .n{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.08em;}
+  .sec-card h3{font-size:17px;margin:8px 0 6px;}
+  .sec-card .tickers{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--jade-soft);margin-bottom:10px;}
+  .sec-card p{font-size:13.5px;color:var(--ink-dim);margin:0;}
+
+  /* ---------- Stat callouts ---------- */
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hairline);border:1px solid var(--hairline);margin-bottom:30px;}
+  .stat{background:var(--panel);padding:20px 18px;}
+  .stat .v{font-family:'Fraunces',serif;font-weight:700;font-size:28px;color:var(--gold-soft);}
+  .stat .k{font-size:12px;color:var(--ink-faint);margin-top:6px;line-height:1.4;}
+  @media(max-width:800px){.stat-row{grid-template-columns:1fr 1fr;}}
+
+  /* ---------- Strategy ---------- */
+  .strategy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .strat-card{background:var(--panel);border:1px solid var(--hairline-soft);border-top:2px solid var(--gold);padding:24px 22px;}
+  .strat-card .horizon{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);}
+  .strat-card h3{font-size:19px;margin:10px 0 12px;}
+  .strat-card ul{margin:0;padding-left:18px;color:var(--ink-dim);font-size:13.8px;}
+  .strat-card li{margin-bottom:8px;}
+  .strat-card li::marker{color:var(--jade-soft);}
+  @media(max-width:900px){.strategy-grid{grid-template-columns:1fr;}}
+
+  .principle-box{
+    margin-top:28px;background:var(--panel-2);border:1px solid var(--hairline);padding:22px 24px;
+  }
+  .principle-box h4{font-size:15px;color:var(--gold-soft);margin-bottom:8px;}
+  .principle-box p{font-size:13.8px;color:var(--ink-dim);margin:0;}
+
+  /* ---------- Risks ---------- */
+  .risk-list{display:grid;gap:1px;background:var(--hairline-soft);border:1px solid var(--hairline-soft);}
+  .risk-item{background:var(--panel);padding:18px 20px;display:grid;grid-template-columns:28px 1fr;gap:14px;}
+  .risk-item .mark{color:var(--red);font-family:'IBM Plex Mono',monospace;font-weight:600;}
+  .risk-item h4{font-size:14.5px;margin-bottom:4px;color:var(--ink);}
+  .risk-item p{font-size:13.5px;color:var(--ink-dim);margin:0;}
+
+  /* ---------- Footer / sources ---------- */
+  footer{padding:44px 0 60px;}
+  .sources{font-size:12.8px;color:var(--ink-faint);columns:2;column-gap:40px;}
+  .sources li{margin-bottom:9px;break-inside:avoid;}
+  .sources a{color:var(--ink-dim);text-decoration:none;border-bottom:1px dotted var(--hairline-soft);}
+  .sources a:hover{color:var(--gold-soft);}
+  .final-note{margin-top:30px;font-size:12.5px;color:var(--ink-faint);border-top:1px solid var(--hairline-soft);padding-top:20px;}
+</style>
+</head>
+<body>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Sự kiện thị trường · Nâng hạng FTSE</div>
+      <h1>Còn lại <em>15 ngày</em> đến khi FTSE Russell công bố danh sách chính thức</h1>
+      <p class="lede">Ngày <strong>21/08/2026</strong>, FTSE Russell sẽ công bố danh sách cổ phiếu Việt Nam đủ điều kiện vào rổ FTSE Global Equity Index Series (GEIS), mở đường cho đợt nâng hạng chính thức có hiệu lực từ 21/09/2026. Trang này tổng hợp danh mục 32 mã tham khảo đã công bố, phân tích nhóm ngành hưởng lợi và khung chiến lược giải ngân theo từng giai đoạn.</p>
+      <div class="badge-row">
+        <span class="badge">32 MÃ THAM KHẢO</span>
+        <span class="badge">DỮ LIỆU ĐẾN 31/12/2025</span>
+        <span class="badge">4 ĐỢT GIẢI NGÂN · 09/2026 → 09/2027</span>
+      </div>
+    </div>
+    <div class="countdown">
+      <div class="num" id="daysLeft">15</div>
+      <div class="lbl">ngày còn lại</div>
+      <div class="date">Công bố chính thức: <span class="mono">Thứ Sáu, 21/08/2026</span><br>Hiệu lực nâng hạng: <span class="mono">Thứ Hai, 21/09/2026</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="eyebrow">Lộ trình</div>
+    <h2>4 đợt giải ngân trọng số, kéo dài đến tháng 9/2027</h2>
+    <p class="intro">Việc đưa cổ phiếu Việt Nam vào rổ FTSE GEIS không diễn ra một lần mà theo 4 đợt (tranches), mỗi đợt bổ sung thêm một phần trọng số đầu tư. Đây là cơ chế chuẩn của FTSE Russell nhằm giảm sốc thanh khoản cho thị trường mới được nâng hạng.</p>
+    <div class="roadmap">
+      <div class="rstep now">
+        <div class="pct">10%</div>
+        <div class="cum">Tích lũy: 10%</div>
+        <div class="when">Đợt 1 · 21/09/2026</div>
+        <p>Việt Nam chính thức rời nhóm Thị trường Cận biên. Dòng vốn thụ động đầu tiên giải ngân, ước tính ban đầu khá hạn chế.</p>
+      </div>
+      <div class="rstep">
+        <div class="pct">+20%</div>
+        <div class="cum">Tích lũy: 30%</div>
+        <div class="when">Đợt 2 · 03/2027</div>
+        <p>Trọng số tiếp tục mở rộng khi các quỹ hoàn thiện quy trình lưu ký, giao dịch không ký quỹ trước (non-prefunding).</p>
+      </div>
+      <div class="rstep">
+        <div class="pct">+35%</div>
+        <div class="cum">Tích lũy: 65%</div>
+        <div class="when">Đợt 3 · 06/2027</div>
+        <p>Giai đoạn giải ngân lớn nhất theo từng đợt đơn lẻ — dòng vốn tổ chức quốc tế dự kiến gia tăng rõ rệt.</p>
+      </div>
+      <div class="rstep">
+        <div class="pct">+35%</div>
+        <div class="cum">Tích lũy: 100%</div>
+        <div class="when">Đợt 4 · 09/2027</div>
+        <p>Hoàn tất trọng số đầy đủ của Việt Nam trong các rổ chỉ số FTSE Emerging và Global All Cap.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="watchlist">
+  <div class="wrap">
+    <div class="eyebrow">Danh mục dự kiến</div>
+    <h2>32 mã cổ phiếu FTSE Russell đưa vào danh sách tham khảo</h2>
+    <p class="intro">Danh sách dưới đây dựa trên dữ liệu sàng lọc của FTSE Russell tính đến 31/12/2025 theo tiêu chí của bộ chỉ số FTSE Global All Cap (vốn hóa, thanh khoản, tỷ lệ sở hữu nước ngoài còn lại — FOL). Đây là danh sách <strong>mang tính tham khảo</strong>; danh sách chính thức sẽ được cập nhật lại theo dữ liệu mới nhất vào ngày 21/08/2026.</p>
+
+    <div class="tabs" id="tabs">
+      <button class="tab-btn active" data-filter="all">Tất cả (32)</button>
+      <button class="tab-btn" data-filter="large">Vốn hóa lớn (5)</button>
+      <button class="tab-btn" data-filter="mid">Vốn hóa trung bình (4)</button>
+      <button class="tab-btn" data-filter="small">Vốn hóa nhỏ (23)</button>
+    </div>
+
+    <div class="table-scroll">
+      <table id="stockTable">
+        <thead>
+          <tr><th>Mã</th><th>Doanh nghiệp</th><th>Ngành</th><th>Nhóm vốn hóa</th></tr>
+        </thead>
+        <tbody id="stockBody"></tbody>
+      </table>
+    </div>
+    <p class="table-note">Chứng khoán KBSV đánh giá nhóm vốn hóa lớn và trung bình sẽ ít biến động so với danh sách chính thức 21/08, trong khi nhóm vốn hóa nhỏ có thể thay đổi nhiều hơn do yếu tố thanh khoản và tỷ lệ sở hữu nước ngoài còn lại (FOL).</p>
+  </div>
+</section>
+
+<section id="sectors">
+  <div class="wrap">
+    <div class="eyebrow">Phân tích nhóm ngành</div>
+    <h2>Ngành nào hưởng lợi nhiều nhất khi dòng vốn thụ động vào?</h2>
+    <p class="intro">Phân bổ theo ngành của 32 mã cho thấy ba nhóm chiếm tỷ trọng lớn nhất: bất động sản, ngân hàng và chứng khoán — phản ánh đúng cấu trúc vốn hóa và thanh khoản hiện tại của thị trường Việt Nam.</p>
+    <div class="sector-grid" id="sectorGrid"></div>
+  </div>
+</section>
+
+<section id="impact">
+  <div class="wrap">
+    <div class="eyebrow">Ước tính tác động dòng vốn</div>
+    <h2>Quy mô dòng tiền: kỳ vọng dài hạn, nhưng khởi động chậm</h2>
+    <div class="stat-row">
+      <div class="stat"><div class="v">~150tr USD</div><div class="k">Dòng vốn ước tính giải ngân ngay trong đợt 1 (09/2026), theo ước tính của MBS &amp; SSI Research</div></div>
+      <div class="stat"><div class="v">0,227%</div><div class="k">Tỷ trọng Việt Nam trong rổ FTSE Emerging Index sau khi hoàn tất nâng hạng</div></div>
+      <div class="stat"><div class="v">0,35%</div><div class="k">Tỷ trọng trong rổ FTSE Emerging All Cap</div></div>
+      <div class="stat"><div class="v">5–7 lần</div><div class="k">Mức tăng dòng vốn ngoại trung bình theo thống kê Bloomberg tại các thị trường từng được nâng hạng</div></div>
+    </div>
+    <p class="intro" style="margin-bottom:0">Theo ông Phạm Lưu Hưng — Kinh tế trưởng, Giám đốc Phân tích SSI Research — dòng tiền thực tế trong đợt đầu tiên khá hạn chế nên tác động ngắn hạn lên thị trường không quá lớn; câu chuyện nâng hạng mang tính chất dài hạn và các định chế tài chính quốc tế vẫn đang trong quá trình kết nối với các quỹ chưa có tài khoản tại Việt Nam. Diễn biến bán ròng của khối ngoại quanh thời điểm công bố tin chính thức được cho là phản ứng "risk-off" mang tính toàn cầu (giá dầu tăng, USD mạnh) hơn là phản ứng riêng với câu chuyện Việt Nam.</p>
+  </div>
+</section>
+
+<section id="strategy">
+  <div class="wrap">
+    <div class="eyebrow">Khung chiến lược</div>
+    <h2>Chiến lược giải ngân theo từng khung thời gian</h2>
+    <p class="intro">Đây là khung tham khảo tổng hợp từ khuyến nghị của các công ty chứng khoán, không phải lời khuyên đầu tư cá nhân hóa. Mỗi nhà đầu tư cần đối chiếu với khẩu vị rủi ro, thời gian nắm giữ và danh mục hiện có của bản thân trước khi ra quyết định.</p>
+    <div class="strategy-grid">
+      <div class="strat-card">
+        <div class="horizon">Ngắn hạn · Trước &amp; quanh 21/08</div>
+        <h3>Quan sát, tránh đuổi giá theo tin đồn</h3>
+        <ul>
+          <li>Theo dõi sát danh sách chính thức khi FTSE Russell công bố — danh sách 32 mã hiện tại chỉ mang tính tham khảo và có thể thay đổi, đặc biệt ở nhóm vốn hóa nhỏ.</li>
+          <li>Hạn chế mở vị thế lướt sóng T+ chỉ dựa trên kỳ vọng tin tức, vì SSI Research lưu ý dòng tiền thực tế của đợt đầu khá khiêm tốn.</li>
+          <li>Ưu tiên nhóm vốn hóa lớn/trung bình (VCB, BID, HPG, VHM, VIC, FPT, VNM…) do khả năng lọt danh sách chính thức được đánh giá ổn định hơn.</li>
+        </ul>
+      </div>
+      <div class="strat-card">
+        <div class="horizon">Trung hạn · Sau xác nhận chính thức</div>
+        <h3>Giải ngân theo xác nhận, ưu tiên nhóm hưởng lợi trực tiếp</h3>
+        <ul>
+          <li>Sau ngày 21/08, đối chiếu danh sách chính thức với danh mục cá nhân để xác định các mã thực sự được đưa vào rổ chỉ số.</li>
+          <li>Theo dõi các quỹ ETF mô phỏng FTSE Vietnam để nắm chỉ báo sớm về dòng vốn giải ngân thực tế quanh kỳ cơ cấu tháng 9/2026.</li>
+          <li>Cân nhắc giải ngân theo từng phần (DCA — trung bình giá) thay vì dồn toàn bộ vốn vào một thời điểm, do biến động ngắn hạn quanh các mốc tin tức thường lớn.</li>
+        </ul>
+      </div>
+      <div class="strat-card">
+        <div class="horizon">Dài hạn · Đến hết 2027</div>
+        <h3>Tích lũy theo lộ trình 4 đợt, ưu tiên nền tảng doanh nghiệp</h3>
+        <ul>
+          <li>Lộ trình trọng số 10% → 30% → 65% → 100% kéo dài đến 09/2027 tạo dư địa tích lũy dần thay vì giải ngân một lần.</li>
+          <li>Ưu tiên doanh nghiệp đầu ngành có nền tảng tài chính vững, tăng trưởng lợi nhuận thực chất — không chỉ dựa vào việc "được vào rổ chỉ số".</li>
+          <li>Theo dõi song song tiến trình xét nâng hạng của MSCI, vốn được xem là bước tiếp theo sau khi FTSE hoàn tất, có thể tạo thêm một chu kỳ dòng vốn mới.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="principle-box">
+      <h4>Nguyên tắc được các chuyên gia nhấn mạnh</h4>
+      <p>Thông điệp lặp lại từ giới phân tích (SSI Research) là không nên "tham bát bỏ mâm" — tức không nên đánh đổi lợi ích dài hạn của câu chuyện nâng hạng để chạy theo các biến động giá ngắn hạn (T+) quanh mỗi tin tức. Nâng hạng là một hành trình thay đổi góc nhìn của nhà đầu tư tổ chức quốc tế đối với thị trường Việt Nam, diễn ra trong nhiều quý chứ không phải một phiên giao dịch.</p>
+    </div>
+  </div>
+</section>
+
+<section id="risks">
+  <div class="wrap">
+    <div class="eyebrow">Rủi ro cần lưu ý</div>
+    <h2>Những yếu tố có thể làm thay đổi kịch bản</h2>
+    <div class="risk-list">
+      <div class="risk-item">
+        <div class="mark">01</div>
+        <div><h4>Danh sách chưa chính thức</h4><p>32 mã hiện tại dựa trên dữ liệu 31/12/2025 và chỉ mang tính tham khảo. Danh sách chính thức công bố ngày 21/08/2026 có thể loại bỏ hoặc bổ sung mã, đặc biệt ở nhóm vốn hóa nhỏ do biến động thanh khoản và tỷ lệ sở hữu nước ngoài (FOL).</p></div>
+      </div>
+      <div class="risk-item">
+        <div class="mark">02</div>
+        <div><h4>Rủi ro vĩ mô toàn cầu ("risk-off")</h4><p>Khối ngoại có thể tiếp tục bán ròng ngay cả khi có tin tích cực, do các yếu tố toàn cầu như giá dầu tăng, đồng USD mạnh — ảnh hưởng chung đến các thị trường mới nổi, không riêng Việt Nam.</p></div>
+      </div>
+      <div class="risk-item">
+        <div class="mark">03</div>
+        <div><h4>Dòng vốn đợt đầu nhỏ hơn kỳ vọng</h4><p>Ước tính khoảng 150 triệu USD cho đợt 1 là mức khiêm tốn so với quy mô vốn hóa thị trường, nên tác động giá ngắn hạn có thể không tương xứng với kỳ vọng của nhà đầu tư cá nhân.</p></div>
+      </div>
+      <div class="risk-item">
+        <div class="mark">04</div>
+        <div><h4>Rủi ro đầu cơ theo tin tức</h4><p>Việc mua đuổi giá các cổ phiếu "được cho là" sẽ vào rổ chỉ số trước khi có xác nhận chính thức tiềm ẩn rủi ro điều chỉnh mạnh nếu danh sách cuối cùng khác với dự đoán.</p></div>
+      </div>
+    </div>
+    <div class="disclaimer">
+      <b>Lưu ý quan trọng:</b> Nội dung trên được tổng hợp từ các báo cáo phân tích và tin tức công khai (CafeF, VnEconomy, Tuổi Trẻ, Nhadautu.vn) tính đến ngày 06/08/2026, mang tính chất thông tin tham khảo, <b>không phải khuyến nghị đầu tư cá nhân hóa</b>. Giá cổ phiếu và danh sách cấu thành chỉ số có thể thay đổi. Nhà đầu tư nên tự nghiên cứu (DYOR) hoặc tham vấn chuyên viên tư vấn tài chính được cấp phép trước khi ra quyết định giải ngân.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="eyebrow">Nguồn tham khảo</div>
+    <h2 style="font-size:19px;margin:10px 0 20px;">Bài viết &amp; báo cáo được sử dụng</h2>
+    <ul class="sources">
+      <li>CafeF — <a href="https://cafef.vn/thi-truong-chung-khoan.chn" target="_blank" rel="noopener">Tin tức thị trường chứng khoán</a>, 05/08/2026</li>
+      <li>VnEconomy — <a href="https://vneconomy.vn/ftse-russell-cong-bo-lo-trinh-chi-tiet-nang-hang-va-danh-sach-32-co-phieu-du-kien-vao-ro-ftse-geis.htm" target="_blank" rel="noopener">FTSE Russell công bố lộ trình chi tiết nâng hạng và danh sách 32 cổ phiếu</a>, 08/04/2026</li>
+      <li>Tuổi Trẻ Online — <a href="https://tuoitre.vn/viet-nam-duoc-nang-hang-ftse-russell-he-lo-32-co-phieu-du-kien-vao-ro-chi-so-toan-cau-20260408001216153.htm" target="_blank" rel="noopener">FTSE Russell hé lộ 32 cổ phiếu dự kiến vào rổ chỉ số toàn cầu</a>, 08/04/2026</li>
+      <li>CafeF — <a href="https://cafef.vn/nong-ftse-russell-du-kien-danh-muc-co-phieu-viet-nam-va-ty-trong-khi-nang-hang-18826040806100436.chn" target="_blank" rel="noopener">Dự kiến danh mục cổ phiếu Việt Nam và tỷ trọng khi nâng hạng</a>, 07/04/2026</li>
+      <li>Nhadautu.vn — <a href="https://nhadautu.vn/chung-khoan-viet-nam-nang-hang-nhung-co-phieu-nao-se-lot-vao-mat-xanh-cua-ftse-russell-d104136.html" target="_blank" rel="noopener">Những cổ phiếu nào sẽ lọt "mắt xanh" của FTSE Russell?</a>, 08/04/2026</li>
+      <li>CafeF — <a href="https://cafef.vn/khi-thi-truong-chung-khoan-viet-nam-duoc-nang-hang-loat-co-phieu-ngan-hang-lot-mat-xanh-ftse-russell-188260408075039684.chn" target="_blank" rel="noopener">Loạt cổ phiếu ngân hàng lọt "mắt xanh" FTSE Russell</a>, 08/04/2026</li>
+      <li>VnEconomy — <a href="https://vneconomy.vn/danh-muc-26-co-phieu-huong-loi-sau-khi-ftse-russell-nang-hang-chung-khoan-viet-nam.htm" target="_blank" rel="noopener">Danh mục cổ phiếu hưởng lợi sau khi FTSE Russell nâng hạng</a>, 08/04/2026</li>
+    </ul>
+    <div class="final-note">
+      Trang được tạo ngày 06/08/2026 dựa trên thông tin công khai tại thời điểm biên soạn. Đây là tài liệu tổng hợp — không đại diện cho quan điểm chính thức của FTSE Russell, HOSE, HNX hay bất kỳ công ty chứng khoán nào được nhắc đến.
+    </div>
+  </div>
+</footer>
+
+<script>
+  const stocks = [
+    {tk:"HPG", name:"Tập đoàn Hòa Phát", sector:"Thép", cap:"large"},
+    {tk:"VCB", name:"Ngân hàng Ngoại thương Việt Nam", sector:"Ngân hàng", cap:"large"},
+    {tk:"BID", name:"Ngân hàng Đầu tư &amp; Phát triển VN", sector:"Ngân hàng", cap:"large"},
+    {tk:"VHM", name:"Vinhomes", sector:"Bất động sản", cap:"large"},
+    {tk:"VIC", name:"Tập đoàn Vingroup", sector:"Đa ngành", cap:"large"},
+    {tk:"MSN", name:"Tập đoàn Masan", sector:"Tiêu dùng", cap:"mid"},
+    {tk:"SAB", name:"Sabeco", sector:"Đồ uống", cap:"mid"},
+    {tk:"FPT", name:"FPT Corporation", sector:"Công nghệ", cap:"mid"},
+    {tk:"VNM", name:"Vinamilk", sector:"Sữa &amp; Thực phẩm", cap:"mid"},
+    {tk:"SSI", name:"Chứng khoán SSI", sector:"Chứng khoán", cap:"small"},
+    {tk:"DPM", name:"Đạm Phú Mỹ", sector:"Hóa chất", cap:"small"},
+    {tk:"KBC", name:"Đô thị Kinh Bắc", sector:"Khu công nghiệp", cap:"small"},
+    {tk:"HUT", name:"Tasco", sector:"Hạ tầng / BĐS", cap:"small"},
+    {tk:"SHB", name:"Ngân hàng SHB", sector:"Ngân hàng", cap:"small"},
+    {tk:"DIG", name:"DIC Corp", sector:"Bất động sản", cap:"small"},
+    {tk:"EIB", name:"Eximbank", sector:"Ngân hàng", cap:"small"},
+    {tk:"DXG", name:"Đất Xanh Group", sector:"Bất động sản", cap:"small"},
+    {tk:"KDH", name:"Khang Điền", sector:"Bất động sản", cap:"small"},
+    {tk:"VIX", name:"Chứng khoán VIX", sector:"Chứng khoán", cap:"small"},
+    {tk:"VND", name:"Chứng khoán VNDirect", sector:"Chứng khoán", cap:"small"},
+    {tk:"PDR", name:"Phát Đạt", sector:"Bất động sản", cap:"small"},
+    {tk:"DGC", name:"Hóa chất Đức Giang", sector:"Hóa chất", cap:"small"},
+    {tk:"NVL", name:"Novaland", sector:"Bất động sản", cap:"small"},
+    {tk:"VJC", name:"Vietjet Air", sector:"Hàng không", cap:"small"},
+    {tk:"VCI", name:"Chứng khoán Bản Việt", sector:"Chứng khoán", cap:"small"},
+    {tk:"VRE", name:"Vincom Retail", sector:"BĐS bán lẻ", cap:"small"},
+    {tk:"GEX", name:"Gelex", sector:"Thiết bị điện", cap:"small"},
+    {tk:"FRT", name:"FPT Retail", sector:"Bán lẻ", cap:"small"},
+    {tk:"GEE", name:"Gelex Electric", sector:"Thiết bị điện", cap:"small"},
+    {tk:"BSR", name:"Lọc hóa dầu Bình Sơn", sector:"Dầu khí", cap:"small"},
+    {tk:"KDC", name:"Kinh Đô (KIDO)", sector:"Thực phẩm", cap:"small"},
+    {tk:"STB", name:"Sacombank", sector:"Ngân hàng", cap:"small"},
+  ];
+
+  const capLabel = {large:"Vốn hóa lớn", mid:"Vốn hóa trung bình", small:"Vốn hóa nhỏ"};
+  const capClass = {large:"cap-large", mid:"cap-mid", small:""};
+
+  // Ticker tape
+  const track = document.getElementById('tickerTrack');
+  const tapeItems = [...stocks, ...stocks].map(s => `<span class="tick"><b>${s.tk}</b> · ${s.sector}</span>`).join("");
+  track.innerHTML = tapeItems;
+
+  // Table render
+  const body = document.getElementById('stockBody');
+  function renderTable(filter){
+    body.innerHTML = stocks
+      .filter(s => filter === 'all' || s.cap === filter)
+      .map(s => `<tr>
+        <td class="tk">${s.tk}</td>
+        <td>${s.name}</td>
+        <td>${s.sector}</td>
+        <td><span class="cap-tag ${capClass[s.cap]}">${capLabel[s.cap]}</span></td>
+      </tr>`).join("");
+  }
+  renderTable('all');
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderTable(btn.dataset.filter);
+    });
+  });
+
+  // Sector grid
+  const sectors = [
+    {name:"Ngân hàng", tks:["VCB","BID","SHB","EIB","STB"], note:"Nhóm chiếm tỷ trọng lớn nhất — vừa có đại diện quốc doanh vốn hóa lớn (VCB, BID) vừa có ngân hàng tầm trung thanh khoản cao, tỷ lệ free-float lớn (SHB, STB, EIB)."},
+    {name:"Bất động sản", tks:["VHM","VIC","DIG","DXG","KDH","PDR","NVL","VRE"], note:"Nhóm đông đảo nhất về số lượng mã. Hưởng lợi kép từ câu chuyện nâng hạng và kỳ vọng phục hồi chu kỳ bất động sản trong nước."},
+    {name:"Chứng khoán", tks:["SSI","VIX","VND","VCI"], note:"Nhóm hưởng lợi trực tiếp từ thanh khoản thị trường tăng và dòng vốn ngoại mới — thường được xem là 'proxy' cho câu chuyện nâng hạng."},
+    {name:"Công nghiệp & Vật liệu", tks:["HPG","DGC","DPM","GEX","GEE","BSR"], note:"Đại diện cho nhóm sản xuất, hóa chất, năng lượng — vốn hóa lớn, chuỗi cung ứng gắn với chu kỳ đầu tư công và xuất khẩu."},
+    {name:"Tiêu dùng, bán lẻ & thực phẩm", tks:["MSN","SAB","VNM","FRT","KDC"], note:"Nhóm phòng thủ, gắn với sức mua nội địa — thường được nhà đầu tư tổ chức quốc tế ưu tiên khi tiếp cận một thị trường mới nổi."},
+    {name:"Công nghệ", tks:["FPT"], note:"Đại diện duy nhất của ngành công nghệ — hưởng lợi từ câu chuyện tăng trưởng dài hạn và nhu cầu chuyển đổi số khu vực."},
+    {name:"Hàng không", tks:["VJC"], note:"Đại diện ngành hàng không — gắn với phục hồi du lịch và giao thương khu vực châu Á - Thái Bình Dương."},
+    {name:"Khu công nghiệp & hạ tầng", tks:["KBC","HUT"], note:"Hưởng lợi từ làn sóng dịch chuyển sản xuất và giải ngân đầu tư công hạ tầng giai đoạn 2026-2027."},
+  ];
+  document.getElementById('sectorGrid').innerHTML = sectors.map((s,i) => `
+    <div class="sec-card">
+      <div class="n">NGÀNH ${String(i+1).padStart(2,'0')} · ${s.tks.length} mã</div>
+      <h3>${s.name}</h3>
+      <div class="tickers">${s.tks.join(" · ")}</div>
+      <p>${s.note}</p>
+    </div>`).join("");
+
+  // Countdown (dynamic)
+  const target = new Date("2026-08-21T00:00:00+07:00");
+  const now = new Date();
+  const diff = Math.max(0, Math.ceil((target - now) / (1000*60*60*24)));
+  document.getElementById('daysLeft').textContent = diff;
+</script>
+
+</body>
+</html>
